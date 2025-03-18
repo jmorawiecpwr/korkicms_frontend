@@ -84,3 +84,8 @@
   font-weight: bold;
   margin-top: 10px;
 }
+
+b {
+  font-weight: 800;
+  color: rgb(154, 154, 222)
+}

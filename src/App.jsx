@@ -20,7 +20,7 @@ function App() {
     });
     const [editingStudent, setEditingStudent] = useState(null);
     const [isFormOpen, setIsFormOpen] = useState(false);
-    const [isDetailOpen, setIsDetailOpen] = useState(false);
+    const [selectedStudentID, setSelectedStudentID] = useState(null);
 
     useEffect(() => {
         fetchStudents();
@@ -41,6 +41,7 @@ function App() {
         setIsFormOpen(!isFormOpen);
         setFormData(student);
         setEditingStudent(student);
+        setSelectedStudentID(null)
     };
 
     const handleDelete = async (id) => {
@@ -56,8 +57,8 @@ function App() {
 
     const handleDetails = (student) => {
         setIsFormOpen(false);
-        setIsDetailOpen(!isDetailOpen);
-    }
+        setSelectedStudentID(selectedStudentID === student.id ? null : student.id);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -168,8 +169,11 @@ function App() {
                     formData={formData}
                 />
             )}
-            {isDetailOpen && (
-                <Details/>
+            {selectedStudentID && (
+                <Details
+                    student = {students.find((s) => s.id === selectedStudentID)}
+                    onClose = {() => setSelectedStudentID(null)}
+                />
             )}
         </React.Fragment>
     );
