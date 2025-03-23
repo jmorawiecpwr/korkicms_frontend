@@ -4,6 +4,7 @@ import Tile from "./Components/Tile.jsx";
 import Accordion from "./Components/Accordion.jsx";
 import StudentForm from "./Components/StudentForm.jsx";
 import Details from "./Components/Details.jsx";
+import LessonPanel from "./Components/LessonPanel.jsx";
 
 function App() {
     const API_URL = "http://127.0.0.1:8000/api/students/";
@@ -131,15 +132,15 @@ function App() {
                         key={student.id}
                         name={student.name}
                         homework={
-                            student.homeworks.length > 0
+                            student.homeworks && student.homeworks.length > 0
                                 ? student.homeworks[student.homeworks.length - 1].description
                                 : "Brak pracy domowej"
                         }
                         topic={
-                            student.topics.length > 0
+                            student.topics && student.topics.length > 0
                                 ? student.topics[student.topics.length - 1].description
                                 : "Nie uzupełniono tematów"
-                        }
+                        }                        
                     >
                         <button className="btn edit-btn" onClick={(e) => { e.stopPropagation(); handleEdit(student); }}>Edytuj</button>
                         <button className="btn delete-btn" onClick={(e) => { e.stopPropagation(); handleDelete(student.id); }}>Usuń</button>
@@ -148,6 +149,7 @@ function App() {
                 ))
             )}
             <button className="add-student-btn" onClick={() => {
+                setSelectedStudentID(null)
                 setIsFormOpen(!isFormOpen)
                 setEditingStudent(null);
                 setFormData({
@@ -169,12 +171,18 @@ function App() {
                     formData={formData}
                 />
             )}
-            {selectedStudentID && (
-                <Details
-                    student = {students.find((s) => s.id === selectedStudentID)}
-                    onClose = {() => setSelectedStudentID(null)}
-                />
-            )}
+           {selectedStudentID && (() => {
+                 const student = students.find((s) => s.id === selectedStudentID);
+                 return (
+                    <React.Fragment>
+                        <Details
+                            student={student}
+                            onClose={() => setSelectedStudentID(null)}
+                        />
+                        <LessonPanel studentId={student.id} />
+                    </React.Fragment>
+                    );
+})()}
         </React.Fragment>
     );
 }
