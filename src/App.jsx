@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
 import Tile from "./Components/Tile.jsx";
 import Accordion from "./Components/Accordion.jsx";
 import StudentForm from "./Components/StudentForm.jsx";
 import Details from "./Components/Details.jsx";
 import LessonPanel from "./Components/LessonPanel.jsx";
+import "./App.css";
+import StudentSummary from "./Components/StudentSummary.jsx";
+import DashboardSummary from "./Components/DashboardSummary.jsx";
+import EarningsChart from "./Components/EarningChart.jsx";
 
 function App() {
     const API_URL = "http://127.0.0.1:8000/api/students/";
@@ -116,15 +119,7 @@ function App() {
     return (
         <React.Fragment>
             <h2><b>Recap</b> Twoich korepetycji</h2>
-            <div className="tile-container">
-                <Tile title='Twój zarobek za ten miesiąc' value='2300 zł' />
-                <Tile title='Ilość prac domowych do sprawdzenia' value='2' />
-                <Tile title='Ilość odwołanych zajęć' value='1' />
-                <Tile title='Nierozliczonych zajęć' value='7' />
-                <Tile title='Projekcja liczby godzin' value='34' />
-                <Tile title='Do następnych zajęć pozostało' value='12:03:11' />
-            </div>
-
+            <DashboardSummary students={students} />
             <h2>Lista uczniów</h2>
             {students.length === 0 ? <p>Brak uczniów</p> : (
                 students.map((student) => (
@@ -180,9 +175,11 @@ function App() {
                             onClose={() => setSelectedStudentID(null)}
                         />
                         <LessonPanel studentId={student.id} />
+                        <StudentSummary student={student} />
                     </React.Fragment>
                     );
 })()}
+            <EarningsChart students={students} />
         </React.Fragment>
     );
 }

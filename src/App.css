@@ -2,7 +2,10 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+  --btn-primary-hover: #2980b9;
+  --bg-dark: #2a2a2a;
+  --text-light: #f1f1f1;
+  --btn-primary: #3498db;
 }
 
 .logo {
@@ -26,7 +29,6 @@
     transform: rotate(360deg);
   }
 }
-
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
@@ -55,11 +57,11 @@
   width: fit-content;
   transition: background 0.3s ease;
 }
-
 .add-student-btn:hover {
   background: #333;
 }
 
+/* Kafelki */
 .tile-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -83,9 +85,4 @@
   font-size: 26px;
   font-weight: bold;
   margin-top: 10px;
-}
-
-b {
-  font-weight: 800;
-  color: rgb(154, 154, 222)
 }
