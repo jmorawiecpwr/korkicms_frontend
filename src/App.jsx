@@ -10,8 +10,11 @@ import DashboardSummary from "./Components/DashboardSummary.jsx";
 import EarningsChart from "./Components/EarningChart.jsx";
 
 function App() {
-    const API_URL = "http://127.0.0.1:8000/api/students/";
-    const LESSONS_API = "http://127.0.0.1:8000/api/lessons/";
+    const API_BASE = import.meta.env.VITE_API_BASE || "http://127.0.0.1:8000";
+    const API_URL = `${API_BASE}/api/students/`;
+    const LESSONS_API = `${API_BASE}/api/lessons/`;
+    const TOKEN_URL = `${API_BASE}/api/token/`;
+
     const [lessons, setLessons] = useState([]);
     const [students, setStudents] = useState([]);
     const [formData, setFormData] = useState({
@@ -28,14 +31,51 @@ function App() {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [selectedStudentID, setSelectedStudentID] = useState(null);
 
+    const [token, setToken] = useState(localStorage.getItem("access_token") || null);
+    const [loginData, setLoginData] = useState({ username: "", password: "" });
+
+    const authHeaders = token
+        ? { "Content-Type": "application/json", Authorization: `Bearer ${token}` }
+        : { "Content-Type": "application/json" };
+
     useEffect(() => {
-        fetchStudents();
-        fetchLessons();
-    }, []);
+        if (token) {
+            fetchStudents();
+            fetchLessons();
+        }
+    }, [token]);
+
+    const handleLoginChange = (e) => {
+        setLoginData({ ...loginData, [e.target.name]: e.target.value });
+    };
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await fetch(TOKEN_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(loginData),
+            });
+            if (!res.ok) throw new Error("Błąd logowania");
+            const data = await res.json();
+            localStorage.setItem("access_token", data.access);
+            setToken(data.access);
+        } catch (err) {
+            console.error("Login error:", err.message);
+        }
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem("access_token");
+        setToken(null);
+        setStudents([]);
+        setLessons([]);
+    };
 
     const fetchStudents = async () => {
         try {
-            const res = await fetch(API_URL);
+            const res = await fetch(API_URL, { headers: authHeaders });
             if (!res.ok) throw new Error("Błąd podczas ładowania danych!");
             const data = await res.json();
             setStudents(data);
@@ -46,7 +86,7 @@ function App() {
 
     const fetchLessons = async () => {
         try {
-            const res = await fetch(LESSONS_API);
+            const res = await fetch(LESSONS_API, { headers: authHeaders });
             if (!res.ok) throw new Error("Błąd podczas ładowania lekcji!");
             const data = await res.json();
             setLessons(data);
@@ -56,17 +96,19 @@ function App() {
     };
 
     const handleEdit = (student) => {
-        setIsFormOpen(!isFormOpen);
+        setIsFormOpen(true);
         setFormData(student);
         setEditingStudent(student);
-        setSelectedStudentID(null)
+        setSelectedStudentID(null);
     };
 
     const handleDelete = async (id) => {
         try {
-            const res = await fetch(`${API_URL}${id}/`, { method: "DELETE" });
+            const res = await fetch(`${API_URL}${id}/`, {
+                method: "DELETE",
+                headers: authHeaders
+            });
             if (!res.ok) throw new Error("Błąd podczas usuwania ucznia!");
-
             await refreshData();
         } catch (error) {
             console.error(error.message);
@@ -85,37 +127,39 @@ function App() {
             if (editingStudent) {
                 response = await fetch(`${API_URL}${editingStudent.id}/`, {
                     method: "PUT",
-                    headers: { "Content-Type": "application/json" },
+                    headers: authHeaders,
                     body: JSON.stringify(formData),
                 });
             } else {
                 response = await fetch(API_URL, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: authHeaders,
                     body: JSON.stringify(formData),
                 });
             }
-    
+
             if (!response.ok) throw new Error(response.statusText);
             await refreshData();
-    
             setEditingStudent(null);
-            setFormData({
-                name: "",
-                classtype: "",
-                discord: "",
-                classday: "",
-                parent: "",
-                hourly_rate: "",
-                profile: "",
-                additional_info: "",
-            });
-            setIsFormOpen(false);
+            resetForm();
         } catch (error) {
             console.error(error);
         }
     };
-    
+
+    const resetForm = () => {
+        setFormData({
+            name: "",
+            classtype: "",
+            discord: "",
+            classday: "",
+            parent: "",
+            hourly_rate: "",
+            profile: "",
+            additional_info: "",
+        });
+        setIsFormOpen(false);
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -126,7 +170,7 @@ function App() {
         try {
             await fetch(`${LESSONS_API}${lessonId}/`, {
                 method: "PATCH",
-                headers: { "Content-Type": "application/json" },
+                headers: authHeaders,
                 body: JSON.stringify({ is_settled: true })
             });
             await refreshData();
@@ -135,19 +179,8 @@ function App() {
         }
     };
 
-    const refreshData = async () =>  {
-        try {
-            const [studentsRes, lessonsRes] = await Promise.all([
-                fetch(API_URL),
-                fetch(LESSONS_API)
-            ])
-            if (!studentsRes.ok || !lessonsRes.ok) { throw new Error("Błąd przy pobieraniu danych studentów lub uczniów") }
-            const studentsData = await studentsRes.json();
-            const lessonsData = await lessonsRes.json();
-
-            setStudents(studentsData);
-            setLessons(lessonsData)
-        } catch (err) { console.error(err) }
+    const refreshData = async () => {
+        await Promise.all([fetchStudents(), fetchLessons()]);
     };
 
     const updateSingleLesson = (lessonId, updatedData) => {
@@ -162,8 +195,19 @@ function App() {
             );
         }
     };
-    
-    
+
+    if (!token) {
+        return (
+            <div className="login-form">
+                <h2>Logowanie</h2>
+                <form onSubmit={handleLogin}>
+                    <input type="text" name="username" placeholder="Login" value={loginData.username} onChange={handleLoginChange} required />
+                    <input type="password" name="password" placeholder="Hasło" value={loginData.password} onChange={handleLoginChange} required />
+                    <button type="submit">Zaloguj się</button>
+                </form>
+            </div>
+        );
+    }
 
     return (
         <React.Fragment>
@@ -171,51 +215,32 @@ function App() {
             <DashboardSummary students={students} lessons={lessons} />
             <h2>Lista uczniów</h2>
             {students.length === 0 ? <p>Brak uczniów</p> : (
-                students.map((student) => (
-                    (() => {
-                        const studentLessons = lessons
-                          .filter(l => l.student === student.id)
-                          .sort((a, b) => new Date(b.date) - new Date(a.date));
-                      
-                        const latestLesson = studentLessons[0];
-                      
-                        return (
-                          <Accordion
+                students.map((student) => {
+                    const studentLessons = lessons
+                        .filter(l => l.student === student.id)
+                        .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                    const latestLesson = studentLessons[0];
+
+                    return (
+                        <Accordion
                             key={student.id}
                             name={student.name}
-                            homework={
-                              latestLesson?.homework?.trim()
-                                ? latestLesson.homework
-                                : "Brak pracy domowej"
-                            }
-                            topic={
-                              latestLesson?.topic?.trim()
-                                ? latestLesson.topic
-                                : "Nie uzupełniono tematów"
-                            }
-                          >
+                            homework={latestLesson?.homework?.trim() || "Brak pracy domowej"}
+                            topic={latestLesson?.topic?.trim() || "Nie uzupełniono tematów"}
+                        >
                             <button className="btn edit-btn" onClick={(e) => { e.stopPropagation(); handleEdit(student); }}>Edytuj</button>
                             <button className="btn delete-btn" onClick={(e) => { e.stopPropagation(); handleDelete(student.id); }}>Usuń</button>
                             <button className="btn details-btn" onClick={(e) => { e.stopPropagation(); handleDetails(student); }}>Szczegóły</button>
-                          </Accordion>
-                        );
-                      })()                      
-                ))
+                        </Accordion>
+                    );
+                })
             )}
             <button className="add-student-btn" onClick={() => {
-                setSelectedStudentID(null)
-                setIsFormOpen(!isFormOpen)
+                setSelectedStudentID(null);
+                setIsFormOpen(true);
                 setEditingStudent(null);
-                setFormData({
-                    name: "",
-                    classtype: "",
-                    discord: "",
-                    classday: "",
-                    parent: "",
-                    hourly_rate: "",
-                    profile: "",
-                    additional_info: "",
-                });
+                resetForm();
             }}>Dodaj nowego ucznia</button>
             {isFormOpen && (
                 <StudentForm
@@ -225,25 +250,26 @@ function App() {
                     formData={formData}
                 />
             )}
-           {selectedStudentID && (() => {
-                 const student = students.find((s) => s.id === selectedStudentID);
-                 return (
+            {selectedStudentID && (() => {
+                const student = students.find((s) => s.id === selectedStudentID);
+                return (
                     <React.Fragment>
-                        <Details
-                            student={student}
-                            onClose={() => setSelectedStudentID(null)}
-                        />
+                        <Details student={student} onClose={() => setSelectedStudentID(null)} />
                         <LessonPanel 
                             studentId={student.id} 
                             lessons={lessons.filter(l => l.student === student.id)}
                             onLessonSettled={handleLessonSettled}
                             onLessonUpdate={updateSingleLesson}
                         />
-                    <StudentSummary student={student} lessons={lessons.filter(l => l.student === student.id)} />
+                        <StudentSummary student={student} lessons={lessons.filter(l => l.student === student.id)} />
                     </React.Fragment>
-                    );
-})()}
-             <EarningsChart students={students} lessons={lessons} />
+                );
+            })()}
+            <EarningsChart students={students} lessons={lessons} />
+
+            <footer className="app-footer">
+                <button onClick={handleLogout} className="logout-footer-btn">Wyloguj się</button>
+            </footer>
         </React.Fragment>
     );
 }

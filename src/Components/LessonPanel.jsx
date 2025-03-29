@@ -10,7 +10,8 @@ export default function LessonPanel({ studentId, lessons, onLessonSettled, onLes
         homework: '',
     });
 
-    const API_KEY = 'http://127.0.0.1:8000/api/lessons/';
+    const API_BASE = import.meta.env.VITE_API_BASE || "http://127.0.0.1:8000";
+    const API_KEY = `${API_BASE}/api/lessons/`;    
 
     const handleDelete = async (id) => {
         const res = await fetch(`${API_KEY}${id}/`, { method: "DELETE" });
