@@ -205,8 +205,8 @@ function App() {
 
     if (!token) {
         return (
-            <div className="auth-container">
-                <div className="auth-card">
+            <div className="auth-wrapper">
+                <div className="auth-card no-bg">
                     <h2>{authMode === "login" ? "Logowanie" : "Rejestracja"}</h2>
                     <form onSubmit={handleAuth}>
                         <input type="text" name="username" placeholder="Login" value={authData.username} onChange={handleAuthChange} required />
