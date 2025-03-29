@@ -165,7 +165,7 @@ function App() {
             profile: "",
             additional_info: "",
         });
-        setIsFormOpen(false);
+        setIsFormOpen(true);
     };
 
     const handleChange = (e) => {
@@ -205,7 +205,7 @@ function App() {
 
     if (!token) {
         return (
-            <div className="auth-wrapper">
+            <div className="auth-wrapper" style={{ colorScheme: "light" }}>
                 <div className="auth-card no-bg">
                     <h2>{authMode === "login" ? "Logowanie" : "Rejestracja"}</h2>
                     <form onSubmit={handleAuth}>
