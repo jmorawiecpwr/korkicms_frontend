@@ -24,24 +24,9 @@ ChartJS.register(
     Legend
 );
 
-export default function EarningsChart({ students }) {
-    const [lessons, setLessons] = useState([]);
+export default function EarningsChart({ students, lessons }) {
     const [filter, setFilter] = useState('all');
     const [chartType, setChartType] = useState('bar');
-
-    useEffect(() => {
-        fetchLessons();
-    }, []);
-
-    const fetchLessons = async () => {
-        try {
-            const res = await fetch("http://127.0.0.1:8000/api/lessons/");
-            const data = await res.json();
-            setLessons(data);
-        } catch (err) {
-            console.error("Błąd pobierania lekcji:", err);
-        }
-    };
 
     const now = new Date();
     const filteredLessons = lessons.filter(lesson => {

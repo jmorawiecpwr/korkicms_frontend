@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Trash2 } from 'lucide-react';
 import './LessonPanel.css';
 
-export default function LessonPanel({ studentId }) {
-    const [lessons, setLessons] = useState([]);
-    const [loading, setLoading] = useState(true);
+export default function LessonPanel({ studentId, lessons, onLessonSettled, onLessonUpdate }) {
+
     const [newLesson, setNewLesson] = useState({
         date: '',
         topic: '',
@@ -13,26 +12,11 @@ export default function LessonPanel({ studentId }) {
 
     const API_KEY = 'http://127.0.0.1:8000/api/lessons/';
 
-    useEffect(() => {
-        fetchLessons();
-    }, []);
-
-    const fetchLessons = async () => {
-        try {
-            const res = await fetch(API_KEY);
-            const data = await res.json();
-            const filtered = data.filter(lesson => lesson.student === studentId);
-            setLessons(filtered);
-        } catch (err) {
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     const handleDelete = async (id) => {
-        await fetch(`${API_KEY}${id}/`, { method: "DELETE" });
-        setLessons(prev => prev.filter(lesson => lesson.id !== id));
+        const res = await fetch(`${API_KEY}${id}/`, { method: "DELETE" });
+        if (res.ok) {
+            onLessonUpdate(id, null);
+        }        
     };
 
     const handleChange = (e) => {
@@ -56,10 +40,10 @@ export default function LessonPanel({ studentId }) {
             body: JSON.stringify(lessonToSend),
         });
         if (res.ok) {
-            const newL = await res.json();
-            setLessons(prev => [...prev, newL]);
+            const newLesson = await res.json();
+            onLessonUpdate(newLesson.id, newLesson);
             setNewLesson({ date: "", topic: "", homework: "" });
-        }
+        }        
     };
 
     const toggleLessonField = async (lessonId, fieldName, currentValue) => {
@@ -70,21 +54,18 @@ export default function LessonPanel({ studentId }) {
                 body: JSON.stringify({ [fieldName]: !currentValue }),
             });
     
+   
             if (res.ok) {
-                setLessons(prevLessons =>
-                    prevLessons.map(lesson =>
-                        lesson.id === lessonId ? { ...lesson, [fieldName]: !currentValue } : lesson
-                    )
-                );
-            } else {
+                onLessonUpdate(lessonId, { [fieldName]: !currentValue });
+                onLessonSettled?.();
+            }
+             else {
                 console.error("Błąd przy aktualizacji pola:", fieldName);
             }
         } catch (err) {
             console.error("Błąd połączenia:", err);
         }
     };    
-
-    if (loading) return <p>Ładowanie lekcji...</p>;
 
     return (
         <div className="lesson-panel">
