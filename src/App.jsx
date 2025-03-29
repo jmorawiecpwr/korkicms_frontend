@@ -14,6 +14,7 @@ function App() {
     const API_URL = `${API_BASE}/api/students/`;
     const LESSONS_API = `${API_BASE}/api/lessons/`;
     const TOKEN_URL = `${API_BASE}/api/token/`;
+    const REGISTER_URL = `${API_BASE}/api/register/`;
 
     const [lessons, setLessons] = useState([]);
     const [students, setStudents] = useState([]);
@@ -32,7 +33,8 @@ function App() {
     const [selectedStudentID, setSelectedStudentID] = useState(null);
 
     const [token, setToken] = useState(localStorage.getItem("access_token") || null);
-    const [loginData, setLoginData] = useState({ username: "", password: "" });
+    const [authMode, setAuthMode] = useState("login");
+    const [authData, setAuthData] = useState({ username: "", password: "" });
 
     const authHeaders = token
         ? { "Content-Type": "application/json", Authorization: `Bearer ${token}` }
@@ -45,24 +47,29 @@ function App() {
         }
     }, [token]);
 
-    const handleLoginChange = (e) => {
-        setLoginData({ ...loginData, [e.target.name]: e.target.value });
+    const handleAuthChange = (e) => {
+        setAuthData({ ...authData, [e.target.name]: e.target.value });
     };
 
-    const handleLogin = async (e) => {
+    const handleAuth = async (e) => {
         e.preventDefault();
+        const url = authMode === "register" ? REGISTER_URL : TOKEN_URL;
         try {
-            const res = await fetch(TOKEN_URL, {
+            const res = await fetch(url, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(loginData),
+                body: JSON.stringify(authData),
             });
-            if (!res.ok) throw new Error("Błąd logowania");
+            if (!res.ok) throw new Error("Błąd autoryzacji");
             const data = await res.json();
-            localStorage.setItem("access_token", data.access);
-            setToken(data.access);
+            if (data.access) {
+                localStorage.setItem("access_token", data.access);
+                setToken(data.access);
+            } else {
+                setAuthMode("login");
+            }
         } catch (err) {
-            console.error("Login error:", err.message);
+            console.error("Auth error:", err.message);
         }
     };
 
@@ -198,13 +205,21 @@ function App() {
 
     if (!token) {
         return (
-            <div className="login-form">
-                <h2>Logowanie</h2>
-                <form onSubmit={handleLogin}>
-                    <input type="text" name="username" placeholder="Login" value={loginData.username} onChange={handleLoginChange} required />
-                    <input type="password" name="password" placeholder="Hasło" value={loginData.password} onChange={handleLoginChange} required />
-                    <button type="submit">Zaloguj się</button>
-                </form>
+            <div className="auth-container">
+                <div className="auth-card">
+                    <h2>{authMode === "login" ? "Logowanie" : "Rejestracja"}</h2>
+                    <form onSubmit={handleAuth}>
+                        <input type="text" name="username" placeholder="Login" value={authData.username} onChange={handleAuthChange} required />
+                        <input type="password" name="password" placeholder="Hasło" value={authData.password} onChange={handleAuthChange} required />
+                        <button type="submit">{authMode === "login" ? "Zaloguj się" : "Zarejestruj się"}</button>
+                    </form>
+                    <p>
+                        {authMode === "login" ? "Nie masz konta?" : "Masz już konto?"} {" "}
+                        <button className="switch-auth" onClick={() => setAuthMode(authMode === "login" ? "register" : "login")}>
+                            {authMode === "login" ? "Zarejestruj się" : "Zaloguj się"}
+                        </button>
+                    </p>
+                </div>
             </div>
         );
     }
