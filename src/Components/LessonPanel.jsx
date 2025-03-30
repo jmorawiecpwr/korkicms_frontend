@@ -1,28 +1,37 @@
-import React, { useState, useEffect } from "react";
-import { Trash2 } from 'lucide-react';
-import './LessonPanel.css';
+import React, { useState } from "react";
+import { Trash2 } from "lucide-react";
+import "./LessonPanel.css";
 
 export default function LessonPanel({ studentId, lessons, onLessonSettled, onLessonUpdate }) {
-
     const [newLesson, setNewLesson] = useState({
-        date: '',
-        topic: '',
-        homework: '',
+        date: "",
+        topic: "",
+        homework: "",
     });
 
     const API_BASE = import.meta.env.VITE_API_BASE || "http://127.0.0.1:8000";
-    const API_KEY = `${API_BASE}/api/lessons/`;    
+    const API_KEY = `${API_BASE}/api/lessons/`;
+
+    const token = localStorage.getItem("access_token");
+
+    const authHeaders = {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+    };
 
     const handleDelete = async (id) => {
-        const res = await fetch(`${API_KEY}${id}/`, { method: "DELETE" });
+        const res = await fetch(`${API_KEY}${id}/`, {
+            method: "DELETE",
+            headers: authHeaders,
+        });
         if (res.ok) {
             onLessonUpdate(id, null);
-        }        
+        }
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setNewLesson(prev => ({ ...prev, [name]: value }));
+        setNewLesson((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleAddLesson = async (e) => {
@@ -36,37 +45,38 @@ export default function LessonPanel({ studentId, lessons, onLessonSettled, onLes
         };
 
         const res = await fetch(API_KEY, {
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
+            method: "POST",
+            headers: authHeaders,
             body: JSON.stringify(lessonToSend),
         });
+
         if (res.ok) {
             const newLesson = await res.json();
             onLessonUpdate(newLesson.id, newLesson);
             setNewLesson({ date: "", topic: "", homework: "" });
-        }        
+        } else {
+            console.error("Błąd przy dodawaniu lekcji");
+        }
     };
 
     const toggleLessonField = async (lessonId, fieldName, currentValue) => {
         try {
             const res = await fetch(`${API_KEY}${lessonId}/`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
+                method: "PATCH",
+                headers: authHeaders,
                 body: JSON.stringify({ [fieldName]: !currentValue }),
             });
-    
-   
+
             if (res.ok) {
                 onLessonUpdate(lessonId, { [fieldName]: !currentValue });
                 onLessonSettled?.();
-            }
-             else {
+            } else {
                 console.error("Błąd przy aktualizacji pola:", fieldName);
             }
         } catch (err) {
             console.error("Błąd połączenia:", err);
         }
-    };    
+    };
 
     return (
         <div className="lesson-panel">
@@ -75,7 +85,7 @@ export default function LessonPanel({ studentId, lessons, onLessonSettled, onLes
             {lessons.length === 0 ? (
                 <p className="no-lessons-message">Brak lekcji.</p>
             ) : (
-                lessons.map(lesson => (
+                lessons.map((lesson) => (
                     <div key={lesson.id} className="lesson-card">
                         <button onClick={() => handleDelete(lesson.id)} className="trash-btn-left" title="Usuń lekcję">
                             <Trash2 />
@@ -88,6 +98,7 @@ export default function LessonPanel({ studentId, lessons, onLessonSettled, onLes
                         <span className="lesson-homework-text">
                             Praca domowa: {lesson.homework || "Brak"}
                         </span>
+
                         <div className="lesson-actions">
                             <button
                                 className={`lesson-btn ${lesson.is_settled ? "active" : ""}`}

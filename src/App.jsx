@@ -60,8 +60,10 @@ function App() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(authData),
             });
-            if (!res.ok) throw new Error("Błąd autoryzacji");
+
             const data = await res.json();
+            if (!res.ok) throw new Error(data.detail || "Błąd autoryzacji");
+
             if (data.access) {
                 localStorage.setItem("access_token", data.access);
                 setToken(data.access);
@@ -113,7 +115,7 @@ function App() {
         try {
             const res = await fetch(`${API_URL}${id}/`, {
                 method: "DELETE",
-                headers: authHeaders
+                headers: authHeaders,
             });
             if (!res.ok) throw new Error("Błąd podczas usuwania ucznia!");
             await refreshData();
@@ -130,27 +132,20 @@ function App() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            let response;
-            if (editingStudent) {
-                response = await fetch(`${API_URL}${editingStudent.id}/`, {
-                    method: "PUT",
-                    headers: authHeaders,
-                    body: JSON.stringify(formData),
-                });
-            } else {
-                response = await fetch(API_URL, {
-                    method: "POST",
-                    headers: authHeaders,
-                    body: JSON.stringify(formData),
-                });
-            }
+            const url = editingStudent ? `${API_URL}${editingStudent.id}/` : API_URL;
+            const method = editingStudent ? "PUT" : "POST";
 
-            if (!response.ok) throw new Error(response.statusText);
+            const res = await fetch(url, {
+                method,
+                headers: authHeaders,
+                body: JSON.stringify(formData),
+            });
+
+            if (!res.ok) throw new Error("Błąd zapisu ucznia");
             await refreshData();
-            setEditingStudent(null);
             resetForm();
         } catch (error) {
-            console.error(error);
+            console.error(error.message);
         }
     };
 
@@ -165,6 +160,7 @@ function App() {
             profile: "",
             additional_info: "",
         });
+        setEditingStudent(null);
         setIsFormOpen(true);
     };
 
@@ -214,7 +210,7 @@ function App() {
                         <button type="submit">{authMode === "login" ? "Zaloguj się" : "Zarejestruj się"}</button>
                     </form>
                     <p>
-                        {authMode === "login" ? "Nie masz konta?" : "Masz już konto?"} {" "}
+                        {authMode === "login" ? "Nie masz konta?" : "Masz już konto?"}{" "}
                         <button className="switch-auth" onClick={() => setAuthMode(authMode === "login" ? "register" : "login")}>
                             {authMode === "login" ? "Zarejestruj się" : "Zaloguj się"}
                         </button>
@@ -225,7 +221,7 @@ function App() {
     }
 
     return (
-        <React.Fragment>
+        <>
             <h2><b>Recap</b> Twoich korepetycji</h2>
             <DashboardSummary students={students} lessons={lessons} />
             <h2>Lista uczniów</h2>
@@ -234,7 +230,6 @@ function App() {
                     const studentLessons = lessons
                         .filter(l => l.student === student.id)
                         .sort((a, b) => new Date(b.date) - new Date(a.date));
-
                     const latestLesson = studentLessons[0];
 
                     return (
@@ -253,10 +248,10 @@ function App() {
             )}
             <button className="add-student-btn" onClick={() => {
                 setSelectedStudentID(null);
-                setIsFormOpen(true);
                 setEditingStudent(null);
                 resetForm();
             }}>Dodaj nowego ucznia</button>
+
             {isFormOpen && (
                 <StudentForm
                     isEdit={!!editingStudent}
@@ -268,24 +263,23 @@ function App() {
             {selectedStudentID && (() => {
                 const student = students.find((s) => s.id === selectedStudentID);
                 return (
-                    <React.Fragment>
+                    <>
                         <Details student={student} onClose={() => setSelectedStudentID(null)} />
-                        <LessonPanel 
-                            studentId={student.id} 
+                        <LessonPanel
+                            studentId={student.id}
                             lessons={lessons.filter(l => l.student === student.id)}
                             onLessonSettled={handleLessonSettled}
                             onLessonUpdate={updateSingleLesson}
                         />
                         <StudentSummary student={student} lessons={lessons.filter(l => l.student === student.id)} />
-                    </React.Fragment>
+                    </>
                 );
             })()}
             <EarningsChart students={students} lessons={lessons} />
-
             <footer className="app-footer">
                 <button onClick={handleLogout} className="logout-footer-btn">Wyloguj się</button>
             </footer>
-        </React.Fragment>
+        </>
     );
 }
 
