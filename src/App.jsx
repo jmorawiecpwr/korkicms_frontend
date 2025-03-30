@@ -262,6 +262,7 @@ function App() {
             )}
             {selectedStudentID && (() => {
                 const student = students.find((s) => s.id === selectedStudentID);
+                if (!student) return null;                
                 return (
                     <>
                         <Details student={student} onClose={() => setSelectedStudentID(null)} />
