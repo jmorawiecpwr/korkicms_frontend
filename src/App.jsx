@@ -377,9 +377,8 @@ function App() {
             })()}
             
             <section className="chart-section">
-                <EarningsChart students={students} lessons={lessons} />
-            </section>
-            
+                <EarningsChart students={students} lessons={lessons} isNightMode={isNightMode} /> {/* Dodany prop */}
+            </section>        
             <footer className="app-footer">
                 <button onClick={handleLogout} className="logout-footer-btn">Wyloguj się</button>
             </footer>

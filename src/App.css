@@ -248,9 +248,14 @@ body.night-mode {
 }
 .accordion-actions {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     margin-top: 10px;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
+}
+
+.accordion-actions .btn {
+  padding: 7px 14px;
+  font-size: 0.875rem;
 }
 
 .btn {
@@ -793,8 +798,6 @@ select.input-error {
     color: #90cdf4; 
 }
 
-.app-container.night-mode .app-footer {
-}
 .app-container.night-mode .logout-footer-btn {
     background: #E53E3E; 
     color: white;

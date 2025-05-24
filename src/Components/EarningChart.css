@@ -1,27 +1,54 @@
 .earnings-chart-container {
-    margin-top: 40px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  margin-top: 30px;
+  padding: 20px;
+  background-color: var(--card-bg-light);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  border: 1px solid var(--border-color-light);
 }
 
 .earnings-chart-controls {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .earnings-chart-controls select {
-    padding: 8px 12px;
-    font-size: 0.95rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    outline: none;
-    transition: border-color 0.2s ease;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid var(--input-border-light);
+  background-color: var(--input-bg-light);
+  color: var(--text-color-light);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .earnings-chart-controls select:focus {
-    border-color: #4CAF50;
+  border-color: var(--primary-accent-light);
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.chart-wrapper {
+  height: 350px;
+  position: relative;
+}
+
+.night-mode .earnings-chart-container {
+  background-color: var(--card-bg-dark);
+  border-color: var(--border-color-dark);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.night-mode .earnings-chart-controls select {
+  background-color: var(--input-bg-dark);
+  color: var(--text-color-dark);
+  border-color: var(--input-border-dark);
+}
+
+.night-mode .earnings-chart-controls select:focus {
+  border-color: var(--primary-accent-dark);
+  box-shadow: 0 0 0 0.2rem rgba(var(--primary-accent-dark-rgb, 99, 179, 237), .25);
 }

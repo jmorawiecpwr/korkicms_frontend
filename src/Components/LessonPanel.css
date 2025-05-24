@@ -1,70 +1,218 @@
 .lesson-panel {
-    margin-top: 20px;
-  }
-  
-  .lesson-card {
-    color: #131212;
-    border-radius: 6px;
-    padding: 12px;
-    margin: 8px 0;
-    display: grid;
-    grid-template-columns: auto 1fr auto auto auto;
-    align-items: center;
-    gap: 12px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    margin: 20px auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .trash-btn-left {
+  margin-top: 25px;
+  padding: 20px; /* Lekko zmniejszone */
+  background-color: var(--card-bg-light); /* Zmienione na tło karty */
+  border-radius: 8px;
+  border: 1px solid var(--border-color-light);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06); /* Dodany lekki cień */
+}
+
+.lesson-panel > h3 { /* Nagłówek "Lekcje ucznia" */
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: var(--header-color-light);
+  font-size: 1.3rem;
+  border-bottom: 1px solid var(--border-color-light);
+  padding-bottom: 10px;
+}
+
+.lesson-card {
+  background-color: var(--app-bg-light); /* Tło dla każdej karty lekcji, może być nieco inne niż panel */
+  border: 1px solid var(--border-color-light);
+  border-radius: 6px; /* Mniejsze zaokrąglenie */
+  padding: 15px;
+  margin-bottom: 15px;
+  display: grid;
+  grid-template-areas: 
+    "icon info actions"
+    "icon homework actions";
+  grid-template-columns: auto 1fr auto; /* Ikona, treść, akcje */
+  align-items: center; /* Wyśrodkowanie wertykalne */
+  gap: 10px 15px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.lesson-card:last-child {
+    margin-bottom: 0;
+}
+
+.lesson-card .trash-btn-left { 
+    grid-area: icon;
     background: transparent;
     border: none;
-    color: #e74c3c;
+    color: var(--error-red-light);
     cursor: pointer;
-    padding: 4px;
+    padding: 5px; /* Zwiększony obszar klikalny */
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  .trash-btn-left svg {
-    width: 20px;
-    height: 20px;
-    margin-bottom: 20px;
-  }  
+    align-self: flex-start; /* Ikona na górze, jeśli treść jest wieloliniowa */
+}
+.lesson-card .trash-btn-left svg {
+  width: 18px;
+  height: 18px;
+} 
+.lesson-card .trash-btn-left:hover {
+    color: #c0392b; /* Ciemniejszy czerwony */
+    opacity: 0.8;
+}
 
-  .lesson-date-topic {
-    font-weight: bold;
-    font-size: 14px;
-    flex: 1;
-  }
+.lesson-card .lesson-date-topic { 
+    grid-area: info;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--text-color-light);
+}
+.lesson-card .lesson-homework-text { 
+    grid-area: homework;
+    font-size: 0.875rem; 
+    color: var(--subtext-color-light);
+    margin-top: 4px; /* Mały odstęp od tematu */
+}
+.lesson-card .lesson-actions { 
+    grid-area: actions; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px; 
+    align-items: flex-end; 
+}
 
-  .lesson-actions {
+.no-lessons-message {
+    color: var(--subtext-color-light);
+    text-align: center;
+    padding: 20px 0;
+    font-style: italic;
+}
+
+.lesson-btn {
+  background-color: var(--input-border-light); /* Domyślnie bardziej neutralny szary */
+  color: var(--text-color-light);
+  border: 1px solid var(--border-color-light);
+  padding: 7px 10px; /* Zmniejszony padding */
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  text-align: center;
+  min-width: 150px; /* Ustawienie minimalnej szerokości dla spójności */
+  line-height: 1.4;
+}
+.lesson-btn:hover {
+  border-color: var(--subtext-color-light);
+  opacity: 0.9;
+} 
+.lesson-btn.active {
+  background-color: #28a745; /* Zielony dla aktywnego - można zrobić zmienną --success-bg */
+  color: white;
+  border-color: #28a745;
+}
+
+.lesson-form {
     display: flex;
-    gap: 6px;
-  }
-  
-  .lesson-btn {
-    background-color: #3498db;
+    flex-direction: column;
+    gap: 12px; /* Zwiększony odstęp */
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color-light);
+}
+.lesson-form h4 {
+  margin-top: 0;
+  margin-bottom: 10px; /* Zmniejszony margines */
+  color: var(--header-color-light);
+  font-size: 1.15rem; /* Spójność */
+  font-weight: 500;
+}
+.lesson-form input[type="date"],
+.lesson-form input[type="text"] {
+    padding: 10px 12px;
+    border: 1px solid var(--input-border-light);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    background-color: var(--input-bg-light);
+    color: var(--input-text-light);
+}
+.lesson-form input[type="date"]:focus,
+.lesson-form input[type="text"]:focus {
+    border-color: var(--primary-accent-light);
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+.lesson-form .add-lesson-btn {
+    background-color: var(--primary-accent-light);
     color: white;
+    padding: 10px 15px;
+    font-size: 0.9rem;
     border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 12px;
-  }
-  .lesson-btn:hover {
-    background-color: #2980b9;
-  }  
+    align-self: flex-start;
+    transition: background-color 0.2s ease;
+}
+.lesson-form .add-lesson-btn:hover {
+    background-color: #0056b3;
+}
 
-  .lesson-homework-text {
-    font-size: 14px;
-    color: #302c2c;
-  }  
-
-  .lesson-btn.active {
-    background-color: #4CAF50;
+/* Night Mode dla LessonPanel */
+.night-mode .lesson-panel {
+    background-color: var(--card-bg-dark);
+    border-color: var(--border-color-dark);
+}
+.night-mode .lesson-panel > h3, .night-mode .lesson-panel .lesson-form h4 {
+    color: var(--header-color-dark);
+    border-bottom-color: var(--border-color-dark); /* Dla h3 */
+}
+.night-mode .lesson-card {
+    background-color: var(--app-bg-dark); 
+    border-color: var(--border-color-dark);
+}
+.night-mode .no-lessons-message {
+    color: var(--subtext-color-dark);
+}
+.night-mode .trash-btn-left {
+    color: var(--error-red-dark);
+}
+.night-mode .trash-btn-left:hover {
+    color: var(--error-red-light); /* Jaśniejszy na hover, ale nadal czerwony */
+    opacity: 0.8;
+}
+.night-mode .lesson-card .lesson-date-topic {
+    color: var(--text-color-dark);
+}
+.night-mode .lesson-card .lesson-homework-text {
+    color: var(--subtext-color-dark);
+}
+.night-mode .lesson-btn {
+    background-color: var(--input-bg-dark);
+    color: var(--text-color-dark);
+    border-color: var(--input-border-dark);
+}
+.night-mode .lesson-btn:hover {
+  border-color: var(--subtext-color-dark);
+}
+.night-mode .lesson-btn.active {
+    background-color: #38A169; 
+    color: white;
+    border-color: #38A169;
+}
+.night-mode .lesson-form {
+    border-top-color: var(--border-color-dark);
+}
+.night-mode .lesson-form input[type="date"],
+.night-mode .lesson-form input[type="text"] {
+    background-color: var(--input-bg-dark);
+    color: var(--input-text-dark);
+    border-color: var(--input-border-dark);
+}
+.night-mode .lesson-form input[type="date"]:focus,
+.night-mode .lesson-form input[type="text"]:focus {
+    border-color: var(--primary-accent-dark);
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-accent-dark-rgb, 99, 179, 237), .25);
+}
+.night-mode .lesson-form .add-lesson-btn {
+    background-color: var(--primary-accent-dark);
+    color: var(--app-bg-dark);
+}
+.night-mode .lesson-form .add-lesson-btn:hover {
+    background-color: #2B6CB0;
     color: white;
 }

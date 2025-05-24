@@ -2,21 +2,18 @@ import React from 'react';
 import './Details.css'
 
 export default function Details({student, onClose}) {
-
-    const [rolled, setRolled] = React.useState(false);
-
     return (
         <React.Fragment>
-        <div className="details-modal">
+        <div className="student-details-content">
             <h1>{student.name}</h1>
-            <p>Klasa: {student.classtype}</p>
-            <p>Discord: {student.discord}</p>
-            <p>Dzień zajęć: {student.classday}</p>
-            <p>Rodzic: {student.parent}</p>
-            <p>Stawka godzinowa: {student.hourly_rate}</p>
-            <p>Profil: {student.profile}</p>
-            <p>Dodatkowe informacje: {student.additional_info}</p>
-            <button onClick={onClose}>Zamknij</button>
+            <p><strong>Klasa:</strong> {student.classtype}</p>
+            <p><strong>Discord:</strong> {student.discord}</p>
+            <p><strong>Dzień zajęć:</strong> {student.classday}</p>
+            <p><strong>Rodzic:</strong> {student.parent}</p>
+            <p><strong>Stawka godzinowa:</strong> {parseFloat(student.hourly_rate).toFixed(2)} zł</p>
+            <p><strong>Profil:</strong> {student.profile}</p>
+            <p><strong>Dodatkowe informacje:</strong> {student.additional_info}</p>
+            <button onClick={onClose} className="details-close-btn">Zamknij</button>
         </div>
         </React.Fragment>
     )

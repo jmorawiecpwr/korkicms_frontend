@@ -1,11 +1,58 @@
 .student-summary {
-    background-color: #f8f8f8;
-    border-left: 5px solid #4CAF50;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: var(--card-bg-light);
+  border-left: 5px solid var(--primary-accent-light);
+  padding: 15px 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.07);
+  border: 1px solid var(--border-color-light);
 }
-.student-summary h4 {
-    margin-bottom: 6px;
+
+.student-summary .summary-title {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--header-color-light);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color-light);
+}
+
+.student-summary p {
+  margin: 8px 0;
+  font-size: 0.95rem;
+  color: var(--text-color-light);
+  display: flex;
+  justify-content: space-between;
+}
+
+.student-summary .summary-label {
+  color: var(--subtext-color-light);
+  font-weight: 500;
+}
+.student-summary .summary-value {
+    font-weight: 600;
+}
+
+.night-mode .student-summary {
+  background-color: var(--card-bg-dark);
+  border-left-color: var(--primary-accent-dark);
+  border-color: var(--border-color-dark);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.night-mode .student-summary .summary-title {
+  color: var(--header-color-dark);
+  border-bottom-color: var(--border-color-dark);
+}
+
+.night-mode .student-summary p {
+  color: var(--text-color-dark);
+}
+
+.night-mode .student-summary .summary-label {
+  color: var(--subtext-color-dark);
+}
+.night-mode .student-summary .summary-value {
+    color: var(--text-color-dark);
 }

@@ -1,37 +1,38 @@
-import {useEffect, useState} from 'react';
-import './Tile.css'
+import React, { useEffect, useState } from 'react';
+import './Tile.css';
 
-export default function Tile(props) {
-    const tileStyle = {
-        backgroundColor: 'white',
-        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.12)',
-        borderRadius: '16px',
-        padding: '24px',
-        titleAglin: 'center',
-        width: '200px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-    }
+export default function Tile({ title, value, isLast }) {
+    const [isBodyNightMode, setIsBodyNightMode] = useState(
+        typeof document !== 'undefined' && document.body.classList.contains('night-mode')
+    );
 
-    const titleStyle = {
-        fontSize: "18px",
-        fontWeight: "600",
-        color: "#4A4A4A",
-        marginBottom: "8px",
-    };
+    useEffect(() => {
+        if (typeof document === 'undefined') return;
 
-    const valueStyle = {
-        fontSize: "24px",
-        fontWeight: "700",
-        color: "#1A1A1A",
-    };
+        const checkNightMode = () => {
+            setIsBodyNightMode(document.body.classList.contains('night-mode'));
+        };
+
+        checkNightMode(); 
+
+        const observer = new MutationObserver(checkNightMode);
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
+
+    const tileClasses = [
+        'tile',
+        isBodyNightMode ? 'tile-night-mode' : '',
+        isLast ? 'animate-tile-value' : ''
+    ].filter(Boolean).join(' ');
 
     return (
-        <div style={tileStyle}>
-            <h1 style={titleStyle}>{props.title}</h1>
-            <p style={valueStyle}>{props.value}</p>
+        <div className={tileClasses}>
+            <h3 className="tile-title">{title}</h3>
+            <p className="tile-value">{value}</p>
         </div>
-    )
+    );
 }

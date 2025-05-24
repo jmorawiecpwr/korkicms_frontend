@@ -1,37 +1,75 @@
-.details-modal {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    max-width: 400px;
-    margin: 20px auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.student-details-content {
+  background-color: var(--card-bg-light);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color-light);
+  margin-bottom: 20px;
 }
 
-.details-modal h1 {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 10px;
+.student-details-content h1 {
+  font-size: 1.5rem;
+  color: var(--header-color-light);
+  margin-top: 0;
+  margin-bottom: 15px;
+  border-bottom: 1px solid var(--border-color-light);
+  padding-bottom: 10px;
 }
 
-.details-modal p {
-    font-size: 16px;
-    color: #555;
-    margin: 10px 0;
+.student-details-content p {
+  font-size: 0.95rem;
+  color: var(--text-color-light);
+  margin: 10px 0;
+  line-height: 1.6;
 }
 
-.details-modal button {
-    background-color: #0f0f0f;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
+.student-details-content p strong {
+  color: var(--subtext-color-light);
+  font-weight: 600;
+  margin-right: 8px;
 }
 
-.details-modal button:hover {
-    background-color: #3c3d41;
+.student-details-content .details-close-btn {
+  background-color: var(--add-btn-bg-light);
+  color: var(--add-btn-text-light);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  display: inline-block;
+}
+
+.student-details-content .details-close-btn:hover {
+  background-color: var(--add-btn-hover-bg-light);
+}
+
+.night-mode .student-details-content {
+  background-color: var(--card-bg-dark);
+  border-color: var(--border-color-dark);
+}
+
+.night-mode .student-details-content h1 {
+  color: var(--header-color-dark);
+  border-bottom-color: var(--border-color-dark);
+}
+
+.night-mode .student-details-content p {
+  color: var(--text-color-dark);
+}
+
+.night-mode .student-details-content p strong {
+  color: var(--subtext-color-dark);
+}
+
+.night-mode .student-details-content .details-close-btn {
+  background-color: var(--input-bg-dark);
+  color: var(--text-color-dark);
+  border: 1px solid var(--border-color-dark);
+}
+
+.night-mode .student-details-content .details-close-btn:hover {
+  background-color: var(--card-bg-dark);
+  border-color: var(--subtext-color-dark);
 }
