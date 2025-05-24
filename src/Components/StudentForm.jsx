@@ -1,7 +1,14 @@
 import React from "react";
 import "./StudentForm.css";
 
-export default function StudentForm({ isEdit, handleSubmit, handleChange, formData, formErrors = {} }) {
+export default function StudentForm({ 
+    isEdit, 
+    handleSubmit, 
+    handleChange, 
+    formData, 
+    formErrors = {}, 
+    predefinedProfiles = [] 
+}) {
     return (
         <div className="student-form">
             <h1>{isEdit ? "Edytuj ucznia" : "Dodaj nowego ucznia"}</h1>
@@ -19,7 +26,7 @@ export default function StudentForm({ isEdit, handleSubmit, handleChange, formDa
                         {formErrors.name && <span className="field-error-message">{formErrors.name}</span>}
                     </label>
                     <label>
-                        Klasa
+                        Rodzaj zajęć / Klasa
                         <input 
                             type="text" 
                             name="classtype" 
@@ -30,7 +37,7 @@ export default function StudentForm({ isEdit, handleSubmit, handleChange, formDa
                         {formErrors.classtype && <span className="field-error-message">{formErrors.classtype}</span>}
                     </label>
                     <label>
-                        Kontakt do rodzica
+                        Kontakt do rodzica (opcjonalnie)
                         <input 
                             type="text" 
                             name="parent" 
@@ -63,18 +70,26 @@ export default function StudentForm({ isEdit, handleSubmit, handleChange, formDa
                         {formErrors.discord && <span className="field-error-message">{formErrors.discord}</span>}
                     </label>
                     <label>
-                        Profil
+                        Profil (np. mat-fiz, technik programista)
                         <input 
                             type="text" 
                             name="profile" 
                             value={formData.profile} 
                             onChange={handleChange}
                             className={formErrors.profile ? 'input-error' : ''}
+                            list="profile-suggestions"
                         />
+                        {predefinedProfiles && predefinedProfiles.length > 0 && (
+                            <datalist id="profile-suggestions">
+                                {predefinedProfiles.map((profileName) => (
+                                    <option key={profileName} value={profileName} />
+                                ))}
+                            </datalist>
+                        )}
                         {formErrors.profile && <span className="field-error-message">{formErrors.profile}</span>}
                     </label>
                     <label>
-                        Termin zajęć
+                        Termin zajęć (np. Poniedziałek 17:00)
                         <input 
                             type="text" 
                             name="classday" 
@@ -86,12 +101,12 @@ export default function StudentForm({ isEdit, handleSubmit, handleChange, formDa
                     </label>
                     <label>
                         Dodatkowe informacje / preferencje
-                        <input 
-                            type="text" 
+                        <textarea 
                             name="additional_info" 
                             value={formData.additional_info} 
                             onChange={handleChange}
                             className={formErrors.additional_info ? 'input-error' : ''}
+                            rows="3"
                         />
                         {formErrors.additional_info && <span className="field-error-message">{formErrors.additional_info}</span>}
                     </label>
