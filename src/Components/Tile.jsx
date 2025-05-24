@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import './Tile.css'
 
 export default function Tile(props) {
     const tileStyle = {
