@@ -1,91 +1,494 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.app-container {
+  background-color: #f8f9fa;
+  color: #212529;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.app-container h2 {
+  color: #343a40;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+.app-container h2 b {
+    color: #007bff;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.app-container p {
+    line-height: 1.6;
+    margin-bottom: 15px;
 }
 
-.card {
-  padding: 2em;
+.night-mode-toggle-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
 }
 
-.read-the-docs {
-  color: #888;
-}
-
-.add-student-btn {
-  background: black;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 12px 20px;
-  margin: 15px auto;
-  border-radius: 8px;
+.night-mode-toggle {
+  padding: 10px 18px;
+  border-radius: 25px;
   border: none;
   cursor: pointer;
-  display: block;
-  width: fit-content;
-  transition: background 0.3s ease;
+  background-color: #ffffff;
+  color: #495057;
+  font-size: 0.95rem;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.add-student-btn:hover {
-  background: #333;
+.night-mode-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.night-mode-toggle .icon {
+  font-size: 1.2rem;
 }
 
 .tile-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
+  margin-bottom: 40px;
 }
 
 .tile {
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
+  background-color: #ffffff;
+  padding: 20px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e9ecef;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+.tile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
-.tile-value {
-  font-size: 26px;
+.tile h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.tile .value {
+  font-size: 1.9rem;
   font-weight: bold;
+  color: #007bff;
+  margin-top: 5px;
+  display: block;
+}
+
+.accordion {
+  background-color: #ffffff;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #dee2e6;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.accordion-header {
+  padding: 15px 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e9ecef;
+}
+.accordion:last-child .accordion-header {
+}
+
+.accordion-header h4 {
+    margin: 0;
+    font-size: 1.15rem;
+    color: #343a40;
+    font-weight: 500;
+}
+.accordion-header .accordion-summary {
+    font-size: 0.85rem;
+    color: #6c757d;
+    text-align: right;
+}
+.accordion-header .accordion-summary span {
+    display: block;
+    margin-top: 2px;
+}
+
+.accordion-content {
+  padding: 15px 20px;
+  border-top: 1px solid #e9ecef;
+  background-color: #fdfdfd;
+}
+.accordion-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.btn {
+  padding: 9px 18px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.4;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.edit-btn {
+  background-color: #28a745;
+  color: white;
+}
+.edit-btn:hover { background-color: #218838; }
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+.delete-btn:hover { background-color: #c82333; }
+
+.details-btn {
+  background-color: #17a2b8;
+  color: white;
+}
+.details-btn:hover { background-color: #138496; }
+
+.add-student-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 25px;
+  font-size: 1rem;
+  margin: 30px auto 20px auto;
+  display: block;
+  width: fit-content;
+}
+.add-student-btn:hover { background-color: #0056b3; }
+
+.form-overlay, .details-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.student-form-modal, .details-modal {
+  background-color: #ffffff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 550px;
+  position: relative;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.close-form-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 5px;
+  line-height: 1;
+}
+.close-form-btn:hover {
+  color: #343a40;
+}
+
+.student-form-modal h3, .details-modal h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #343a40;
+    font-size: 1.5rem;
+}
+.form-group {
+  margin-bottom: 18px;
+}
+label {
+  display: block;
+  margin-bottom: 6px;
+  color: #495057;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+input[type="text"],
+input[type="number"],
+input[type="date"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  box-sizing: border-box;
+  background-color: #fff;
+  color: #495057;
+  font-size: 0.95rem;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+input:focus, textarea:focus, select:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+.student-form-modal button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
   margin-top: 10px;
 }
+.student-form-modal button[type="submit"]:hover { background-color: #0056b3; }
 
-b {
-  font-weight: 800;
-  color: rgb(154, 154, 222)
+.details-modal p {
+  margin-bottom: 12px;
+  color: #495057;
+  font-size: 0.95rem;
 }
+.details-modal p strong {
+    color: #343a40;
+    margin-right: 5px;
+}
+.details-modal .close-button {
+  background-color: #6c757d;
+  color: white;
+  margin-top: 25px;
+  display: inline-block;
+  min-width: 100px;
+  text-align: center;
+}
+.details-modal .close-button:hover { background-color: #545b62; }
+
+.lesson-panel {
+  margin-top: 25px;
+  padding: 20px 25px;
+  background-color: #e9ecef;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.lesson-panel h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #343a40;
+  font-size: 1.2rem;
+}
+.lesson-panel .form-group { margin-bottom: 15px; }
+.lesson-panel label { font-weight: 500; }
+.lesson-panel input, .lesson-panel textarea {
+  background-color: #fff;
+  border-color: #adb5bd;
+}
+.lesson-panel button {
+  background-color: #28a745;
+  color: white;
+  margin-top: 10px;
+  width: auto;
+  padding: 10px 20px;
+}
+.lesson-panel button:hover { background-color: #218838; }
+
+.app-container.night-mode {
+  background-color: #1A202C;
+  color: #E2E8F0;
+}
+
+.app-container.night-mode .night-mode-toggle {
+  background-color: #2D3748;
+  color: #E2E8F0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.app-container.night-mode h2 {
+  color: #CBD5E0;
+  border-bottom-color: #4A5568;
+}
+.app-container.night-mode h2 b {
+    color: #63B3ED;
+}
+
+.app-container.night-mode .tile {
+  background-color: #2D3748;
+  color: #E2E8F0;
+  border-color: #4A5568;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.app-container.night-mode .tile:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+.app-container.night-mode .tile h3 {
+  color: #A0AEC0;
+}
+.app-container.night-mode .tile .value {
+  color: #63B3ED;
+}
+
+.app-container.night-mode .accordion {
+  background-color: #2D3748;
+  border-color: #4A5568;
+}
+.app-container.night-mode .accordion-header {
+  border-bottom-color: #4A5568;
+}
+.app-container.night-mode .accordion-header h4 {
+    color: #CBD5E0;
+}
+.app-container.night-mode .accordion-header .accordion-summary {
+    color: #A0AEC0;
+}
+.app-container.night-mode .accordion-content {
+  background-color: #212836;
+  border-top-color: #4A5568;
+}
+
+.app-container.night-mode .btn {
+}
+.app-container.night-mode .btn:hover {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+.app-container.night-mode .edit-btn { background-color: #38A169; }
+.app-container.night-mode .edit-btn:hover { background-color: #2F855A; }
+.app-container.night-mode .delete-btn { background-color: #E53E3E; }
+.app-container.night-mode .delete-btn:hover { background-color: #C53030; }
+.app-container.night-mode .details-btn { background-color: #3182CE; }
+.app-container.night-mode .details-btn:hover { background-color: #2B6CB0; }
+
+.app-container.night-mode .add-student-btn {
+  background-color: #4299E1;
+  color: #1A202C;
+}
+.app-container.night-mode .add-student-btn:hover { background-color: #3182CE; color: white; }
+
+.app-container.night-mode .form-overlay,
+.app-container.night-mode .details-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.app-container.night-mode .student-form-modal,
+.app-container.night-mode .details-modal {
+  background-color: #2D3748;
+  border-color: #4A5568;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+.app-container.night-mode .close-form-btn {
+  color: #A0AEC0;
+}
+.app-container.night-mode .close-form-btn:hover {
+  color: #E2E8F0;
+}
+
+.app-container.night-mode .student-form-modal h3,
+.app-container.night-mode .details-modal h3 {
+  color: #CBD5E0;
+}
+.app-container.night-mode label {
+  color: #A0AEC0;
+}
+.app-container.night-mode input[type="text"],
+.app-container.night-mode input[type="number"],
+.app-container.night-mode input[type="date"],
+.app-container.night-mode textarea,
+.app-container.night-mode select {
+  background-color: #1A202C;
+  color: #E2E8F0;
+  border-color: #4A5568;
+}
+.app-container.night-mode input::placeholder,
+.app-container.night-mode textarea::placeholder {
+  color: #718096;
+}
+.app-container.night-mode input:focus,
+.app-container.night-mode textarea:focus,
+.app-container.night-mode select:focus {
+    border-color: #63B3ED;
+    box-shadow: 0 0 0 0.2rem rgba(99, 179, 237, .25);
+}
+
+.app-container.night-mode .student-form-modal button[type="submit"] {
+  background-color: #3182CE;
+  color: white;
+}
+.app-container.night-mode .student-form-modal button[type="submit"]:hover { background-color: #2B6CB0; }
+
+.app-container.night-mode .details-modal p { color: #CBD5E0; }
+.app-container.night-mode .details-modal p strong { color: #E2E8F0; }
+.app-container.night-mode .details-modal .close-button {
+  background-color: #4A5568;
+  color: #E2E8F0;
+}
+.app-container.night-mode .details-modal .close-button:hover { background-color: #718096; }
+
+.app-container.night-mode .lesson-panel {
+  background-color: #222B3A;
+  border-color: #4A5568;
+}
+.app-container.night-mode .lesson-panel h3 { color: #CBD5E0; }
+.app-container.night-mode .lesson-panel input,
+.app-container.night-mode .lesson-panel textarea {
+  background-color: #1A202C;
+  border-color: #4A5568;
+  color: #E2E8F0;
+}
+.app-container.night-mode .lesson-panel button {
+  background-color: #38A169;
+  color: white;
+}
+.app-container.night-mode .lesson-panel button:hover { background-color: #2F855A; }

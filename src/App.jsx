@@ -22,9 +22,14 @@ function App() {
     const [editingStudent, setEditingStudent] = useState(null);
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [selectedStudentID, setSelectedStudentID] = useState(null);
+    const [isNightMode, setIsNightMode] = useState(false);
 
     useEffect(() => {
         fetchStudents();
+        const savedMode = localStorage.getItem('nightMode');
+        if (savedMode) {
+            setIsNightMode(JSON.parse(savedMode));
+        }
     }, []);
 
     const fetchStudents = async () => {
@@ -39,17 +44,16 @@ function App() {
     };
 
     const handleEdit = (student) => {
-        setIsFormOpen(!isFormOpen);
+        setIsFormOpen(true);
         setFormData(student);
         setEditingStudent(student);
-        setSelectedStudentID(null)
+        setSelectedStudentID(null);
     };
 
     const handleDelete = async (id) => {
         try {
             const res = await fetch(`${API_URL}${id}/`, { method: "DELETE" });
             if (!res.ok) throw new Error("Błąd podczas usuwania ucznia!");
-
             setStudents((prev) => prev.filter((student) => student.id !== id));
         } catch (error) {
             console.error(error.message);
@@ -65,7 +69,7 @@ function App() {
         e.preventDefault();
         try {
             let response;
-            if(editingStudent) {
+            if (editingStudent) {
                 response = await fetch(`${API_URL}${editingStudent.id}/`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -79,10 +83,10 @@ function App() {
                 });
             }
 
-            if(!response.ok) throw new Error(response.statusText);
+            if (!response.ok) throw new Error(response.statusText);
             const updatedStudent = await response.json();
 
-            if(editingStudent) {
+            if (editingStudent) {
                 setStudents((prev) =>
                     prev.map((s) => (s.id === editingStudent.id ? { ...s, ...updatedStudent } : s))
                 );
@@ -92,16 +96,9 @@ function App() {
             }
 
             setFormData({
-                name: "",
-                classtype: "",
-                discord: "",
-                classday: "",
-                parent: "",
-                hourly_rate: "",
-                profile: "",
-                additional_info: "",
+                name: "", classtype: "", discord: "", classday: "", parent: "",
+                hourly_rate: "", profile: "", additional_info: "",
             });
-
             setIsFormOpen(false);
         } catch (error) {
             console.error(error);
@@ -113,8 +110,32 @@ function App() {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
+    const toggleNightMode = () => {
+        setIsNightMode(prevMode => {
+            const newMode = !prevMode;
+            localStorage.setItem('nightMode', JSON.stringify(newMode));
+            return newMode;
+        });
+    };
+
+    const handleCloseForm = () => {
+        setIsFormOpen(false);
+        setEditingStudent(null);
+        setFormData({
+            name: "", classtype: "", discord: "", classday: "", parent: "",
+            hourly_rate: "", profile: "", additional_info: "",
+        });
+    };
+
     return (
-        <React.Fragment>
+        <div className={`app-container ${isNightMode ? 'night-mode' : ''}`}>
+            <div className="night-mode-toggle-container">
+                <button onClick={toggleNightMode} className="night-mode-toggle">
+                    <span className="icon">{isNightMode ? '☀️' : '🌙'}</span>
+                    {isNightMode ? 'Tryb Dzienny' : 'Tryb Nocny'}
+                </button>
+            </div>
+
             <h2><b>Recap</b> Twoich korepetycji</h2>
             <div className="tile-container">
                 <Tile title='Twój zarobek za ten miesiąc' value='2300 zł' />
@@ -126,7 +147,7 @@ function App() {
             </div>
 
             <h2>Lista uczniów</h2>
-            {students.length === 0 ? <p>Brak uczniów</p> : (
+            {students.length === 0 ? <p>Brak uczniów do wyświetlenia.</p> : (
                 students.map((student) => (
                     <Accordion
                         key={student.id}
@@ -140,50 +161,56 @@ function App() {
                             student.topics && student.topics.length > 0
                                 ? student.topics[student.topics.length - 1].description
                                 : "Nie uzupełniono tematów"
-                        }                        
+                        }
                     >
-                        <button className="btn edit-btn" onClick={(e) => { e.stopPropagation(); handleEdit(student); }}>Edytuj</button>
-                        <button className="btn delete-btn" onClick={(e) => { e.stopPropagation(); handleDelete(student.id); }}>Usuń</button>
-                        <button className="btn details-btn" onClick={(e) => { e.stopPropagation(); handleDetails(student); }}>Szczegóły</button>
+                        <div className="accordion-actions">
+                            <button className="btn edit-btn" onClick={(e) => { e.stopPropagation(); handleEdit(student); }}>Edytuj</button>
+                            <button className="btn delete-btn" onClick={(e) => { e.stopPropagation(); handleDelete(student.id); }}>Usuń</button>
+                            <button className="btn details-btn" onClick={(e) => { e.stopPropagation(); handleDetails(student); }}>Szczegóły</button>
+                        </div>
                     </Accordion>
                 ))
             )}
             <button className="add-student-btn" onClick={() => {
-                setSelectedStudentID(null)
-                setIsFormOpen(!isFormOpen)
+                setSelectedStudentID(null);
+                setIsFormOpen(true);
                 setEditingStudent(null);
                 setFormData({
-                    name: "",
-                    classtype: "",
-                    discord: "",
-                    classday: "",
-                    parent: "",
-                    hourly_rate: "",
-                    profile: "",
-                    additional_info: "",
+                    name: "", classtype: "", discord: "", classday: "", parent: "",
+                    hourly_rate: "", profile: "", additional_info: "",
                 });
             }}>Dodaj nowego ucznia</button>
+
             {isFormOpen && (
-                <StudentForm
-                    isEdit={!!editingStudent}
-                    handleSubmit={handleSubmit}
-                    handleChange={handleChange}
-                    formData={formData}
-                />
-            )}
-           {selectedStudentID && (() => {
-                 const student = students.find((s) => s.id === selectedStudentID);
-                 return (
-                    <React.Fragment>
-                        <Details
-                            student={student}
-                            onClose={() => setSelectedStudentID(null)}
+                <div className="form-overlay" onClick={handleCloseForm}>
+                    <div className="student-form-modal" onClick={(e) => e.stopPropagation()}>
+                        <button className="close-form-btn" onClick={handleCloseForm}>×</button>
+                        <StudentForm
+                            isEdit={!!editingStudent}
+                            handleSubmit={handleSubmit}
+                            handleChange={handleChange}
+                            formData={formData}
                         />
-                        <LessonPanel studentId={student.id} />
-                    </React.Fragment>
-                    );
-})()}
-        </React.Fragment>
+                    </div>
+                </div>
+            )}
+
+            {selectedStudentID && (() => {
+                const student = students.find((s) => s.id === selectedStudentID);
+                if (!student) return null;
+                return (
+                    <div className="details-overlay" onClick={() => setSelectedStudentID(null)}>
+                        <div className="details-modal" onClick={(e) => e.stopPropagation()}>
+                             <Details
+                                student={student}
+                                onClose={() => setSelectedStudentID(null)}
+                            />
+                            <LessonPanel studentId={student.id} />
+                        </div>
+                    </div>
+                );
+            })()}
+        </div>
     );
 }
 
