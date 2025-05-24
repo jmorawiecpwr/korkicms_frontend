@@ -1,4 +1,41 @@
-<<<<<<< HEAD
+:root {
+  --bg-global-light: #e9ecef;
+  --app-bg-light: #ffffff;
+  --card-bg-light: #ffffff;
+  --text-color-light: #212529;
+  --border-color-light: #e0e0e0;
+  --header-color-light: #343a40;
+  --subtext-color-light: #6c757d;
+  --primary-accent-light: #007bff;
+  --add-btn-bg-light: #212529;
+  --add-btn-text-light: #ffffff;
+  --add-btn-hover-bg-light: #343a40;
+  --input-bg-light: #fff;
+  --input-border-light: #ced4da;
+  --input-text-light: var(--text-color-light);
+  --placeholder-text-light: #a0aec0;
+  --error-red-light: #e74c3c;
+  --error-bg-light: #ffebe6;
+
+  --bg-global-dark: #121212;
+  --app-bg-dark: #1A202C;
+  --card-bg-dark: #2D3748;
+  --text-color-dark: #E2E8F0;
+  --border-color-dark: #4A5568; 
+  --header-color-dark: #CBD5E0;
+  --subtext-color-dark: #A0AEC0;
+  --primary-accent-dark: #63B3ED;
+  --add-btn-bg-dark: #cdd3d8;
+  --add-btn-text-dark: #1A202C;
+  --add-btn-hover-bg-dark: #b4bdc5;
+  --input-bg-dark: #222B3A;
+  --input-border-dark: #4A5568;
+  --input-text-dark: var(--text-color-dark);
+  --placeholder-text-dark: var(--subtext-color-dark);
+  --error-red-dark: #ff7675;
+  --error-bg-dark: #4a2a2a;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -7,56 +44,92 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
-  transition: background-color 0.3s ease, color 0.3s ease;
-=======
+  background-color: var(--bg-global-light); 
+  transition: background-color 0.3s ease;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body.night-mode {
+  background-color: var(--bg-global-dark);
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  --btn-primary-hover: #2980b9;
-  --bg-dark: #2a2a2a;
-  --text-light: #f1f1f1;
-  --btn-primary: #3498db;
->>>>>>> b5dece2cc69a1ab24128f71f0a7ff5f36786367b
+  width: 100%; 
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .app-container {
-  background-color: #f8f9fa;
-  color: #212529;
-  min-height: 100vh;
-  padding: 20px;
+  background-color: var(--app-bg-light);
+  color: var(--text-color-light);
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem; 
   box-sizing: border-box;
+  box-shadow: 0 0 25px rgba(0,0,0,0.08);
+  flex-grow: 1;
+}
+
+@media (min-width: 769px) {
+    .app-container {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        border-radius: 8px;
+        min-height: calc(100vh - 4rem);
+    }
+}
+
+.app-container.night-mode {
+  background-color: var(--app-bg-dark);
+  color: var(--text-color-dark);
+  box-shadow: 0 0 30px rgba(0,0,0,0.25);
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 1rem; 
+    margin-top: 0;
+    margin-bottom: 0;
+    min-height: 100vh;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  body {
+    font-size: 15px;
+  }
+  .app-container h2 {
+    font-size: 1.5rem;
+    margin-top: 20px;
+  }
 }
 
 .app-container h2 {
-  color: #343a40;
+  color: var(--header-color-light);
   margin-top: 30px;
   margin-bottom: 20px;
   font-weight: 600;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 2px solid var(--border-color-light);
   padding-bottom: 10px;
 }
 .app-container h2 b {
-    color: #007bff;
+    color: var(--primary-accent-light);
 }
-<<<<<<< HEAD
 
 .app-container p {
     line-height: 1.6;
     margin-bottom: 15px;
-=======
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
->>>>>>> b5dece2cc69a1ab24128f71f0a7ff5f36786367b
 }
 
 .night-mode-toggle-container {
-  position: fixed;
+  position: fixed; 
   top: 20px;
   right: 20px;
-  z-index: 1001;
+  z-index: 1001; 
 }
 
 .night-mode-toggle {
@@ -64,17 +137,16 @@ body {
   border-radius: 25px;
   border: none;
   cursor: pointer;
-  background-color: #ffffff;
-  color: #495057;
+  background-color: var(--card-bg-light);
+  color: var(--subtext-color-light);
   font-size: 0.95rem;
   font-weight: 500;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   display: flex;
   align-items: center;
   gap: 8px;
 }
-<<<<<<< HEAD
 
 .night-mode-toggle:hover {
   transform: translateY(-2px);
@@ -83,27 +155,35 @@ body {
 
 .night-mode-toggle .icon {
   font-size: 1.2rem;
-=======
-.add-student-btn:hover {
-  background: #333;
->>>>>>> b5dece2cc69a1ab24128f71f0a7ff5f36786367b
 }
 
-/* Kafelki */
+.recap-section,
+.students-list-section,
+.chart-section {
+  margin-bottom: 30px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .tile-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); 
   gap: 20px;
-  margin-bottom: 40px;
+  padding-top: 10px;
+  width: 100%; 
 }
 
 .tile {
-  background-color: #ffffff;
+  background-color: var(--card-bg-light);
   padding: 20px 25px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
-  border: 1px solid #e9ecef;
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+  border: 1px solid var(--border-color-light);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px;
 }
 .tile:hover {
     transform: translateY(-3px);
@@ -114,24 +194,25 @@ body {
   margin-top: 0;
   margin-bottom: 10px;
   font-size: 1rem;
-  color: #6c757d;
+  color: var(--subtext-color-light);
   font-weight: 500;
 }
 
 .tile .value {
   font-size: 1.9rem;
   font-weight: bold;
-  color: #007bff;
+  color: var(--primary-accent-light);
   margin-top: 5px;
   display: block;
+  line-height: 1.2;
 }
 
 .accordion {
-  background-color: #ffffff;
+  background-color: var(--card-bg-light);
   border-radius: 8px;
   margin-bottom: 15px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--border-color-light); 
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
@@ -141,37 +222,35 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e9ecef;
-}
-.accordion:last-child .accordion-header {
+  border-bottom: 1px solid var(--border-color-light); 
 }
 
 .accordion-header h4 {
     margin: 0;
     font-size: 1.15rem;
-    color: #343a40;
+    color: var(--header-color-light);
     font-weight: 500;
 }
 .accordion-header .accordion-summary {
     font-size: 0.85rem;
-    color: #6c757d;
+    color: var(--subtext-color-light);
     text-align: right;
 }
 .accordion-header .accordion-summary span {
     display: block;
-    margin-top: 2px;
+    margin-top: 2px; 
 }
 
 .accordion-content {
   padding: 15px 20px;
-  border-top: 1px solid #e9ecef;
+  border-top: 1px solid var(--border-color-light); 
   background-color: #fdfdfd;
 }
 .accordion-actions {
     display: flex;
     gap: 10px;
     margin-top: 10px;
-    flex-wrap: wrap;
+    flex-wrap: wrap; 
 }
 
 .btn {
@@ -199,33 +278,39 @@ body {
 }
 
 .edit-btn {
-  background-color: #28a745;
+  background-color: #28a745; 
   color: white;
 }
 .edit-btn:hover { background-color: #218838; }
 
 .delete-btn {
-  background-color: #dc3545;
+  background-color: #dc3545; 
   color: white;
 }
 .delete-btn:hover { background-color: #c82333; }
 
 .details-btn {
-  background-color: #17a2b8;
+  background-color: #17a2b8; 
   color: white;
 }
 .details-btn:hover { background-color: #138496; }
 
 .add-student-btn {
-  background-color: #007bff;
-  color: white;
-  padding: 12px 25px;
-  font-size: 1rem;
+  background-color: var(--add-btn-bg-light); 
+  color: var(--add-btn-text-light);
+  padding: 10px 20px;
+  font-size: 0.95rem;
   margin: 30px auto 20px auto;
   display: block;
   width: fit-content;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
 }
-.add-student-btn:hover { background-color: #0056b3; }
+.add-student-btn:hover {
+  background-color: var(--add-btn-hover-bg-light);
+}
 
 .form-overlay, .details-overlay {
   position: fixed;
@@ -233,78 +318,67 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5); 
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-  padding: 20px;
+  z-index: 1000; 
+  padding: 20px; 
   box-sizing: border-box;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
 }
 
 .student-form-modal, .details-modal {
-  background-color: #ffffff;
+  background-color: var(--card-bg-light);
   padding: 25px 30px;
   border-radius: 12px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
   width: 100%;
-  max-width: 550px;
-  position: relative;
+  max-width: 550px; 
+  position: relative; 
   transition: background-color 0.3s ease, border-color 0.3s ease;
-  max-height: 90vh;
+  max-height: 90vh; 
   overflow-y: auto;
-}
-
-.close-form-btn {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  background: transparent;
-  border: none;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #6c757d;
-  cursor: pointer;
-  padding: 5px;
-  line-height: 1;
-}
-.close-form-btn:hover {
-  color: #343a40;
 }
 
 .student-form-modal h3, .details-modal h3 {
     margin-top: 0;
     margin-bottom: 20px;
-    color: #343a40;
+    color: var(--header-color-light);
     font-size: 1.5rem;
 }
+
 .form-group {
   margin-bottom: 18px;
 }
-label {
+.student-form-modal label {
   display: block;
   margin-bottom: 6px;
-  color: #495057;
+  color: var(--subtext-color-light); 
   font-weight: 500;
   font-size: 0.9rem;
 }
 input[type="text"],
 input[type="number"],
-input[type="date"],
+input[type="date"], 
 textarea,
 select {
   width: 100%;
   padding: 10px 12px;
   border-radius: 6px;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--input-border-light);
   box-sizing: border-box;
-  background-color: #fff;
-  color: #495057;
+  background-color: var(--input-bg-light);
+  color: var(--input-text-light);
   font-size: 0.95rem;
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
+input::placeholder, textarea::placeholder {
+    color: var(--placeholder-text-light);
+}
 input:focus, textarea:focus, select:focus {
-    border-color: #80bdff;
+    border-color: var(--primary-accent-light);
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 }
@@ -313,289 +387,128 @@ textarea {
     resize: vertical;
 }
 .student-form-modal button[type="submit"] {
-  background-color: #007bff;
+  background-color: var(--primary-accent-light);
   color: white;
   width: 100%;
   padding: 12px;
   font-size: 1rem;
-  margin-top: 10px;
+  margin-top: 10px; 
 }
 .student-form-modal button[type="submit"]:hover { background-color: #0056b3; }
 
-<<<<<<< HEAD
+.form-error-summary {
+  background-color: var(--error-bg-light);
+  color: var(--error-red-light);
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  border: 1px solid var(--error-red-light);
+  font-size: 0.9rem;
+  text-align: left;
+}
+.form-error-summary.api-error {
+    background-color: var(--error-bg-light);
+}
+
+input.input-error,
+textarea.input-error,
+select.input-error {
+  border-color: var(--error-red-light) !important;
+  box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.25) !important;
+}
+.field-error-message { 
+  color: var(--error-red-light);
+  font-size: 0.8rem;
+  margin-top: 4px;
+  display: block;
+}
+
 .details-modal p {
   margin-bottom: 12px;
   color: #495057;
   font-size: 0.95rem;
 }
 .details-modal p strong {
-    color: #343a40;
+    color: var(--header-color-light);
     margin-right: 5px;
 }
-.details-modal .close-button {
-  background-color: #6c757d;
-  color: white;
-  margin-top: 25px;
-  display: inline-block;
-  min-width: 100px;
-  text-align: center;
-}
-.details-modal .close-button:hover { background-color: #545b62; }
 
 .lesson-panel {
   margin-top: 25px;
   padding: 20px 25px;
   background-color: #e9ecef;
   border-radius: 8px;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--border-color-light); 
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 .lesson-panel h3 {
   margin-top: 0;
   margin-bottom: 15px;
-  color: #343a40;
+  color: var(--header-color-light);
   font-size: 1.2rem;
 }
 .lesson-panel .form-group { margin-bottom: 15px; }
 .lesson-panel label { font-weight: 500; }
-.lesson-panel input, .lesson-panel textarea {
-  background-color: #fff;
-  border-color: #adb5bd;
+.lesson-panel input, .lesson-panel textarea, .lesson-panel select { 
+  background-color: var(--input-bg-light); 
+  border-color: var(--input-border-light); 
 }
-.lesson-panel button {
-  background-color: #28a745;
+.lesson-panel button { 
+  background-color: #28a745; 
   color: white;
   margin-top: 10px;
-  width: auto;
+  width: auto; 
   padding: 10px 20px;
 }
 .lesson-panel button:hover { background-color: #218838; }
 
-.app-container.night-mode {
-  background-color: #1A202C;
-  color: #E2E8F0;
+.chart-section {
+  background-color: var(--card-bg-light);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+  border: 1px solid var(--border-color-light);
 }
 
-.app-container.night-mode .night-mode-toggle {
-  background-color: #2D3748;
-  color: #E2E8F0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+.chart-section canvas {
+  min-height: 300px;
+  max-width: 100%;
+  width: 100% !important;
+  height: auto !important;
+  max-height: 500px;
 }
 
-.app-container.night-mode h2 {
-  color: #CBD5E0;
-  border-bottom-color: #4A5568;
-}
-.app-container.night-mode h2 b {
-    color: #63B3ED;
-}
-
-.app-container.night-mode .tile {
-  background-color: #2D3748;
-  color: #E2E8F0;
-  border-color: #4A5568;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-.app-container.night-mode .tile:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-}
-.app-container.night-mode .tile h3 {
-  color: #A0AEC0;
-}
-.app-container.night-mode .tile .value {
-  color: #63B3ED;
-}
-
-.app-container.night-mode .accordion {
-  background-color: #2D3748;
-  border-color: #4A5568;
-}
-.app-container.night-mode .accordion-header {
-  border-bottom-color: #4A5568;
-}
-.app-container.night-mode .accordion-header h4 {
-    color: #CBD5E0;
-}
-.app-container.night-mode .accordion-header .accordion-summary {
-    color: #A0AEC0;
-}
-.app-container.night-mode .accordion-content {
-  background-color: #212836;
-  border-top-color: #4A5568;
-}
-
-.app-container.night-mode .btn {
-}
-.app-container.night-mode .btn:hover {
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-}
-.app-container.night-mode .edit-btn { background-color: #38A169; }
-.app-container.night-mode .edit-btn:hover { background-color: #2F855A; }
-.app-container.night-mode .delete-btn { background-color: #E53E3E; }
-.app-container.night-mode .delete-btn:hover { background-color: #C53030; }
-.app-container.night-mode .details-btn { background-color: #3182CE; }
-.app-container.night-mode .details-btn:hover { background-color: #2B6CB0; }
-
-.app-container.night-mode .add-student-btn {
-  background-color: #4299E1;
-  color: #1A202C;
-}
-.app-container.night-mode .add-student-btn:hover { background-color: #3182CE; color: white; }
-
-.app-container.night-mode .form-overlay,
-.app-container.night-mode .details-overlay {
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
-.app-container.night-mode .student-form-modal,
-.app-container.night-mode .details-modal {
-  background-color: #2D3748;
-  border-color: #4A5568;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-}
-.app-container.night-mode .close-form-btn {
-  color: #A0AEC0;
-}
-.app-container.night-mode .close-form-btn:hover {
-  color: #E2E8F0;
-}
-
-.app-container.night-mode .student-form-modal h3,
-.app-container.night-mode .details-modal h3 {
-  color: #CBD5E0;
-}
-.app-container.night-mode label {
-  color: #A0AEC0;
-}
-.app-container.night-mode input[type="text"],
-.app-container.night-mode input[type="number"],
-.app-container.night-mode input[type="date"],
-.app-container.night-mode textarea,
-.app-container.night-mode select {
-  background-color: #1A202C;
-  color: #E2E8F0;
-  border-color: #4A5568;
-}
-.app-container.night-mode input::placeholder,
-.app-container.night-mode textarea::placeholder {
-  color: #718096;
-}
-.app-container.night-mode input:focus,
-.app-container.night-mode textarea:focus,
-.app-container.night-mode select:focus {
-    border-color: #63B3ED;
-    box-shadow: 0 0 0 0.2rem rgba(99, 179, 237, .25);
-}
-
-.app-container.night-mode .student-form-modal button[type="submit"] {
-  background-color: #3182CE;
-  color: white;
-}
-.app-container.night-mode .student-form-modal button[type="submit"]:hover { background-color: #2B6CB0; }
-
-.app-container.night-mode .details-modal p { color: #CBD5E0; }
-.app-container.night-mode .details-modal p strong { color: #E2E8F0; }
-.app-container.night-mode .details-modal .close-button {
-  background-color: #4A5568;
-  color: #E2E8F0;
-}
-.app-container.night-mode .details-modal .close-button:hover { background-color: #718096; }
-
-.app-container.night-mode .lesson-panel {
-  background-color: #222B3A;
-  border-color: #4A5568;
-}
-.app-container.night-mode .lesson-panel h3 { color: #CBD5E0; }
-.app-container.night-mode .lesson-panel input,
-.app-container.night-mode .lesson-panel textarea {
-  background-color: #1A202C;
-  border-color: #4A5568;
-  color: #E2E8F0;
-}
-.app-container.night-mode .lesson-panel button {
-  background-color: #38A169;
-  color: white;
-}
-.app-container.night-mode .lesson-panel button:hover { background-color: #2F855A; }
-=======
-.login-form {
-  background-color: var(--bg-dark);
-  color: var(--text-light);
-  padding: 2rem;
-  border-radius: 10px;
-  max-width: 400px;
-  margin: 3rem auto;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-}
-
-.login-form h2 {
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.login-form input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 1rem;
-  border: none;
-  border-radius: 5px;
-}
-
-.login-form button {
-  width: 100%;
-  padding: 12px;
-  background-color: var(--btn-primary);
-  border: none;
-  color: white;
-  font-weight: bold;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.login-form button:hover {
-  background-color: var(--btn-primary-hover);
-}
-
-.logout-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: crimson;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.logout-btn:hover {
-  background: darkred;
-}
-
-.auth-container {
-  height: 100vh;
+.auth-wrapper {
+  min-height: 100vh;
   display: flex;
+  flex-direction: column; 
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #c3cfe2 0%, #c3cfe2 50%, #dde2f2 100%);
+  background-color: var(--bg-global-light);
   font-family: 'Segoe UI', sans-serif;
+  position: relative; 
+  transition: background-color 0.3s ease; 
+  padding: 1rem; 
+  box-sizing: border-box;
 }
 
 .auth-card {
-  background: #ffffff;
+  background: var(--card-bg-light);
   padding: 40px 30px;
   border-radius: 20px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 320px;
-  transition: 0.3s ease-in-out;
+  width: 100%;
+  max-width: 360px; 
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .auth-card h2 {
   margin-bottom: 20px;
   font-size: 24px;
-  color: #333;
+  color: var(--header-color-light); 
+  border-bottom: none; 
+  padding-bottom: 0;
 }
 
 .auth-card form {
@@ -604,21 +517,24 @@ textarea {
   gap: 15px;
 }
 
-.auth-card input {
+.auth-card input { 
   padding: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--input-border-light); 
   border-radius: 10px;
   font-size: 15px;
-  transition: border 0.2s ease;
+  transition: border 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+  background-color: var(--input-bg-light);
+  color: var(--input-text-light);
 }
 
 .auth-card input:focus {
-  border-color: #3f51b5;
+  border-color: var(--primary-accent-light); 
   outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 }
 
 .auth-card button[type="submit"] {
-  background: #3f51b5;
+  background: var(--primary-accent-light); 
   color: white;
   padding: 12px;
   border: none;
@@ -630,19 +546,19 @@ textarea {
 }
 
 .auth-card button[type="submit"]:hover {
-  background: #303f9f;
+  background-color: #0056b3;
 }
 
 .auth-card p {
   margin-top: 20px;
   font-size: 14px;
-  color: #555;
+  color: var(--subtext-color-light); 
 }
 
 .auth-card .switch-auth {
   background: none;
   border: none;
-  color: #3f51b5;
+  color: var(--primary-accent-light); 
   font-weight: bold;
   cursor: pointer;
   text-decoration: underline;
@@ -650,27 +566,239 @@ textarea {
 }
 
 .auth-card .switch-auth:hover {
-  color: #1a237e;
+  color: #0056b3;
 }
 
 .app-footer {
   text-align: center;
   margin-top: 40px;
+  padding-bottom: 20px; 
 }
 
 .logout-footer-btn {
-  background: #f44336;
+  background: #dc3545; 
   color: white;
   padding: 10px 20px;
   font-size: 14px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  margin-bottom: 20px;
+  margin-bottom: 20px; 
   transition: background 0.3s ease;
 }
 
 .logout-footer-btn:hover {
-  background: #d32f2f;
+  background: #c82333; 
 }
->>>>>>> b5dece2cc69a1ab24128f71f0a7ff5f36786367b
+
+/* === Night Mode === */
+.app-container.night-mode .night-mode-toggle,
+.auth-wrapper.night-mode .night-mode-toggle { 
+  background-color: var(--card-bg-dark);
+  color: var(--text-color-dark);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); 
+}
+
+.app-container.night-mode h2 {
+  color: var(--header-color-dark);
+  border-bottom-color: var(--border-color-dark);
+}
+.app-container.night-mode h2 b {
+    color: var(--primary-accent-dark);
+}
+
+.app-container.night-mode .tile {
+  background-color: var(--card-bg-dark);
+  color: var(--text-color-dark); 
+  border-color: var(--border-color-dark);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.app-container.night-mode .tile:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+.app-container.night-mode .tile h3 {
+  color: var(--subtext-color-dark); 
+}
+.app-container.night-mode .tile .value {
+  color: var(--primary-accent-dark); 
+}
+
+.app-container.night-mode .accordion {
+  background-color: var(--card-bg-dark);
+  border-color: var(--border-color-dark);
+}
+.app-container.night-mode .accordion-header {
+  border-bottom-color: var(--border-color-dark);
+}
+.app-container.night-mode .accordion-header h4 {
+    color: var(--header-color-dark);
+}
+.app-container.night-mode .accordion-header .accordion-summary {
+    color: var(--subtext-color-dark);
+}
+.app-container.night-mode .accordion-content {
+  background-color: var(--app-bg-dark);
+  border-top-color: var(--border-color-dark);
+  color: var(--text-color-dark);
+}
+
+.app-container.night-mode .btn:hover {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3); 
+}
+.app-container.night-mode .edit-btn { background-color: #38A169; } 
+.app-container.night-mode .edit-btn:hover { background-color: #2F855A; }
+.app-container.night-mode .delete-btn { background-color: #E53E3E; } 
+.app-container.night-mode .delete-btn:hover { background-color: #C53030; }
+.app-container.night-mode .details-btn { background-color: #3182CE; } 
+.app-container.night-mode .details-btn:hover { background-color: #2B6CB0; }
+
+.app-container.night-mode .add-student-btn {
+  background-color: var(--add-btn-bg-dark); 
+  color: var(--add-btn-text-dark);
+}
+.app-container.night-mode .add-student-btn:hover {
+  background-color: var(--add-btn-hover-bg-dark);
+}
+
+.app-container.night-mode .form-overlay,
+.app-container.night-mode .details-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.app-container.night-mode .student-form-modal,
+.app-container.night-mode .details-modal {
+  background-color: var(--card-bg-dark);
+  border-color: var(--border-color-dark); 
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); 
+}
+
+.app-container.night-mode .student-form-modal h3,
+.app-container.night-mode .details-modal h3 {
+  color: var(--header-color-dark);
+}
+
+.app-container.night-mode .student-form-modal label {
+  color: var(--text-color-dark);
+}
+.app-container.night-mode .student-form-modal input[type="text"],
+.app-container.night-mode .student-form-modal input[type="number"],
+.app-container.night-mode .student-form-modal input[type="date"],
+.app-container.night-mode .student-form-modal textarea,
+.app-container.night-mode .student-form-modal select {
+  background-color: var(--input-bg-dark);
+  color: var(--input-text-dark);
+  border-color: var(--input-border-dark);
+}
+.app-container.night-mode .student-form-modal input::placeholder,
+.app-container.night-mode .student-form-modal textarea::placeholder {
+  color: var(--placeholder-text-dark); 
+}
+.app-container.night-mode .student-form-modal input:focus,
+.app-container.night-mode .student-form-modal textarea:focus,
+.app-container.night-mode .student-form-modal select:focus {
+    border-color: var(--primary-accent-dark); 
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-accent-dark-rgb, 99, 179, 237), .25);
+}
+
+.app-container.night-mode .student-form-modal button[type="submit"] {
+  background-color: var(--primary-accent-dark);
+  color: var(--app-bg-dark); 
+}
+.app-container.night-mode .student-form-modal button[type="submit"]:hover { 
+    background-color: #2B6CB0; 
+    color:white; 
+}
+
+.app-container.night-mode .form-error-summary {
+  background-color: var(--error-bg-dark);
+  color: var(--error-red-dark);
+  border-color: var(--error-red-dark);
+}
+.app-container.night-mode .form-error-summary.api-error {
+    background-color: var(--error-bg-dark);
+}
+.app-container.night-mode input.input-error,
+.app-container.night-mode textarea.input-error,
+.app-container.night-mode select.input-error {
+  border-color: var(--error-red-dark) !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 118, 117, 0.35) !important;
+}
+.app-container.night-mode .field-error-message {
+  color: var(--error-red-dark);
+}
+
+.app-container.night-mode .details-modal p { color: var(--text-color-dark); }
+.app-container.night-mode .details-modal p strong { color: var(--header-color-dark); }
+
+.app-container.night-mode .lesson-panel {
+  background-color: var(--card-bg-dark);
+  border-color: var(--border-color-dark);
+  color: var(--text-color-dark);
+}
+.app-container.night-mode .lesson-panel h3 { color: var(--header-color-dark); }
+.app-container.night-mode .lesson-panel input,
+.app-container.night-mode .lesson-panel textarea,
+.app-container.night-mode .lesson-panel select {
+  background-color: var(--input-bg-dark);
+  border-color: var(--input-border-dark);
+  color: var(--text-color-dark);
+}
+.app-container.night-mode .lesson-panel button {
+  background-color: #38A169; 
+  color: white;
+}
+.app-container.night-mode .lesson-panel button:hover { background-color: #2F855A; }
+
+.app-container.night-mode .chart-section {
+  background-color: var(--card-bg-dark);
+  border-color: var(--border-color-dark);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.auth-wrapper.night-mode .auth-card {
+    background-color: var(--card-bg-dark);
+}
+.auth-wrapper.night-mode .auth-card h2 {
+    color: var(--header-color-dark);
+}
+.auth-wrapper.night-mode .auth-card input {
+    background-color: var(--input-bg-dark);
+    color: var(--text-color-dark);
+    border-color: var(--input-border-dark);
+}
+.auth-wrapper.night-mode .auth-card input::placeholder {
+    color: var(--placeholder-text-dark);
+}
+.auth-wrapper.night-mode .auth-card input:focus {
+    border-color: var(--primary-accent-dark); 
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-accent-dark-rgb, 99, 179, 237), .25);
+}
+.auth-wrapper.night-mode .auth-card button[type="submit"] {
+    background: var(--primary-accent-dark);
+    color: var(--app-bg-dark); 
+}
+.auth-wrapper.night-mode .auth-card button[type="submit"]:hover {
+    background-color: #2B6CB0; 
+     color: white;
+}
+.auth-wrapper.night-mode .auth-card p {
+    color: var(--subtext-color-dark);
+}
+.auth-wrapper.night-mode .auth-card .switch-auth {
+    color: var(--primary-accent-dark);
+}
+.auth-wrapper.night-mode .auth-card .switch-auth:hover {
+    color: #90cdf4; 
+}
+
+.app-container.night-mode .app-footer {
+}
+.app-container.night-mode .logout-footer-btn {
+    background: #E53E3E; 
+    color: white;
+}
+.app-container.night-mode .logout-footer-btn:hover {
+    background: #C53030;
+}

@@ -1,73 +1,144 @@
 .student-form {
-    max-width: 600px;
-    margin: 20px auto;
+    /* max-width: 600px; */
+    /* margin: 20px auto; */
     padding: 25px;
-    background: white;
+    background: var(--card-bg-light); /* Użycie zmiennej */
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    border: 1px solid #ddd;
+    text-align: left;
+    border: 1px solid var(--border-color-light);
 }
 
 .student-form h1 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
-    color: #222;
-    margin-bottom: 15px;
+    color: var(--header-color-light);
+    margin-bottom: 25px;
     text-align: center;
 }
 
 .form-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    padding: 10px;
+    gap: 20px 25px;
+    /* padding: 10px;*/
 }
 
-label {
+.student-form label {
     display: flex;
     flex-direction: column;
-    font-weight: bold;
-    font-size: 14px;
-    color: #333;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--subtext-color-light);
+    margin-bottom: 0;
 }
 
-input {
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: 0.3s;
-    background-color: #f8f8f8;
+.student-form input {
+    padding: 10px 12px;
+    margin-top: 6px;
+    border: 1px solid var(--input-border-light);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: var(--input-bg-light);
+    color: var(--text-color-light);
+}
+.student-form input::placeholder {
+    color: var(--placeholder-text-light);
 }
 
-input:focus {
-    border-color: black;
+.student-form input:focus {
+    border-color: var(--primary-accent-light);
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 }
 
-button {
+.student-form button {
     width: 100%;
-    margin-top: 20px;
+    margin-top: 25px;
     padding: 12px 18px;
     border: none;
-    background: black;
+    background: var(--primary-accent-light);
     color: white;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 6px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: background-color 0.2s ease;
 }
 
-button:hover {
-    background: #333;
+.student-form button:hover {
+    background: #0056b3;
 }
+
+.student-form .input-error {
+  border-color: var(--error-red-light) !important;
+  box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.25) !important;
+}
+.student-form .field-error-message {
+  color: var(--error-red-light);
+  font-size: 0.8rem;
+  margin-top: 5px;
+  text-align: left;
+}
+
 
 @media (max-width: 600px) {
     .form-grid {
         grid-template-columns: 1fr;
+        gap: 15px;
     }
+    .student-form {
+        padding: 20px;
+    }
+    .student-form h1 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+}
+
+.night-mode .student-form {
+    background: var(--card-bg-dark);
+    border-color: var(--border-color-dark);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.night-mode .student-form h1 {
+    color: var(--header-color-dark);
+}
+
+.night-mode .student-form label {
+    color: var(--text-color-dark);
+}
+
+.night-mode .student-form input {
+    background-color: var(--input-bg-dark);
+    color: var(--input-text-dark);
+    border-color: var(--input-border-dark);
+}
+.night-mode .student-form input::placeholder {
+    color: var(--placeholder-text-dark);
+}
+
+.night-mode .student-form input:focus {
+    border-color: var(--primary-accent-dark);
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-accent-dark-rgb, 99, 179, 237), .25);
+}
+
+.night-mode .student-form button {
+    background: var(--primary-accent-dark);
+    color: var(--app-bg-dark);
+}
+
+.night-mode .student-form button:hover {
+    background: #2B6CB0;
+    color: white;
+}
+
+.night-mode .student-form .input-error {
+  border-color: var(--error-red-dark) !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 118, 117, 0.35) !important;
+}
+.night-mode .student-form .field-error-message {
+  color: var(--error-red-dark);
 }
