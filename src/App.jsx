@@ -43,7 +43,9 @@ function App() {
     });
     const [editingStudent, setEditingStudent] = useState(null);
     const [isFormOpen, setIsFormOpen] = useState(false);
-    const [selectedStudentID, setSelectedStudentID] = useState(null);
+    const [selectedStudentDetailsID, setSelectedStudentDetailsID] = useState(null);
+    const [selectedStudentLessonsID, setSelectedStudentLessonsID] = useState(null);
+    const [studentToDelete, setStudentToDelete] = useState(null);
     const [isNightMode, setIsNightMode] = useState(false);
 
     const [token, setToken] = useState(localStorage.getItem("access_token") || null);
@@ -170,7 +172,8 @@ function App() {
         setIsFormOpen(true);
         setFormData(student);
         setEditingStudent(student);
-        setSelectedStudentID(null);
+        setSelectedStudentDetailsID(null);
+        setSelectedStudentLessonsID(null);
         setFormErrors({});
     };
 
@@ -187,9 +190,18 @@ function App() {
         }
     };
 
+    const requestDelete = (student) => {
+        setStudentToDelete(student);
+    };
+
     const handleDetails = (student) => {
-        setIsFormOpen(false);
-        setSelectedStudentID(selectedStudentID === student.id ? null : student.id);
+        setSelectedStudentLessonsID(null);
+        setSelectedStudentDetailsID(selectedStudentDetailsID === student.id ? null : student.id);
+    };
+
+    const handleLessons = (student) => {
+        setSelectedStudentDetailsID(null);
+        setSelectedStudentLessonsID(selectedStudentLessonsID === student.id ? null : student.id);
     };
 
     const validateForm = () => {
@@ -207,7 +219,7 @@ function App() {
                 errors.hourly_rate = "Stawka godzinowa musi być liczbą dodatnią.";
             }
         }
-        
+
         if (!formData.profile || formData.profile.trim() === "") {
             errors.profile = "Profil (np. specjalizacja, klasa) jest wymagany.";
         }
@@ -270,7 +282,8 @@ function App() {
 
     const openNewStudentForm = () => {
         resetFormFields();
-        setSelectedStudentID(null);
+        setSelectedStudentDetailsID(null);
+        setSelectedStudentLessonsID(null);
         setIsFormOpen(true);
     };
 
@@ -382,13 +395,11 @@ function App() {
                                 name={student.name}
                                 homework={latestLesson?.homework?.trim() || "Brak pracy domowej"}
                                 topic={latestLesson?.topic?.trim() || "Nie uzupełniono tematów"}
-                            >
-                                <div className="accordion-actions">
-                                    <button className="btn edit-btn" onClick={(e) => { e.stopPropagation(); handleEdit(student); }}>Edytuj</button>
-                                    <button className="btn delete-btn" onClick={(e) => { e.stopPropagation(); handleDelete(student.id); }}>Usuń</button>
-                                    <button className="btn details-btn" onClick={(e) => { e.stopPropagation(); handleDetails(student); }}>Szczegóły</button>
-                                </div>
-                            </Accordion>
+                                onDetailsClick={() => handleDetails(student)}
+                                onLessonsClick={() => handleLessons(student)}
+                                onEditClick={() => handleEdit(student)}
+                                onDeleteClick={() => requestDelete(student)}
+                            />
                         );
                     })
                 )}
@@ -396,6 +407,74 @@ function App() {
                     Dodaj nowego ucznia
                 </button>
             </section>
+
+            {selectedStudentDetailsID && (() => {
+                const student = students.find((s) => s.id === selectedStudentDetailsID);
+                if (!student) return null;
+                return (
+                    <div className="details-overlay" onClick={() => setSelectedStudentDetailsID(null)}>
+                        <div className="details-modal" onClick={(e) => e.stopPropagation()}>
+                            <Details
+                                student={student}
+                                onClose={() => setSelectedStudentDetailsID(null)}
+                            />
+                            <StudentSummary 
+                                student={student} 
+                                lessons={lessons.filter(l => l.student === student.id)} 
+                            />
+                        </div>
+                    </div>
+                );
+            })()}
+
+            {selectedStudentLessonsID && (() => {
+                const student = students.find((s) => s.id === selectedStudentLessonsID);
+                if (!student) return null;
+                return (
+                    <div className="lessons-overlay" onClick={() => setSelectedStudentLessonsID(null)}>
+                        <div className="lessons-modal" onClick={(e) => e.stopPropagation()}>
+                            <LessonPanel
+                                studentId={student.id}
+                                lessons={lessons.filter(l => l.student === student.id)}
+                                onLessonSettled={handleLessonSettled}
+                                onLessonUpdate={updateSingleLesson}
+                                authHeaders={authHeaders}
+                                LESSONS_API={LESSONS_API}
+                                refreshData={refreshData}
+                            />
+                        </div>
+                    </div>
+                );
+            })()}
+
+            {studentToDelete && (() => {
+                return (
+                    <div className="delete-confirm-overlay" onClick={() => setStudentToDelete(null)}>
+                        <div className="delete-confirm-modal" onClick={(e) => e.stopPropagation()}>
+                            <p style={{ marginBottom: "1rem" }}>
+                                Czy na pewno chcesz usunąć ucznia <strong>{studentToDelete.name}</strong>?
+                            </p>
+                            <div className="delete-confirm-buttons" style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
+                                <button
+                                    className="btn delete-btn"
+                                    onClick={() => {
+                                        handleDelete(studentToDelete.id);
+                                        setStudentToDelete(null);
+                                    }}
+                                >
+                                    Tak, usuń
+                                </button>
+                                <button
+                                    className="btn"
+                                    onClick={() => setStudentToDelete(null)}
+                                >
+                                    Nie
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            })()}
 
             {isFormOpen && (
                 <div className="form-overlay" onClick={handleCloseForm}>
@@ -421,31 +500,6 @@ function App() {
                     </div>
                 </div>
             )}
-
-            {selectedStudentID && (() => {
-                const student = students.find((s) => s.id === selectedStudentID);
-                if (!student) return null;
-                return (
-                    <div className="details-overlay" onClick={() => setSelectedStudentID(null)}>
-                        <div className="details-modal" onClick={(e) => e.stopPropagation()}>
-                            <Details
-                                student={student}
-                                onClose={() => setSelectedStudentID(null)}
-                            />
-                            <LessonPanel
-                                studentId={student.id}
-                                lessons={lessons.filter(l => l.student === student.id)}
-                                onLessonSettled={handleLessonSettled}
-                                onLessonUpdate={updateSingleLesson}
-                                authHeaders={authHeaders}
-                                LESSONS_API={LESSONS_API}
-                                refreshData={refreshData}
-                            />
-                            <StudentSummary student={student} lessons={lessons.filter(l => l.student === student.id)} />
-                        </div>
-                    </div>
-                );
-            })()}
 
             <section className="chart-section">
                 <EarningsChart students={students} lessons={lessons} isNightMode={isNightMode} />

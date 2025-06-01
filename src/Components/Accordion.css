@@ -1,19 +1,58 @@
+:root {
+  --card-bg-light: #f5f7fa;
+  --border-color-light: #d1d5db;
+  --header-color-light: #1f2937;
+  --text-color-light: #374151;
+  --subtext-color-light: #6b7280;
+  --primary-info-light: #3498db;
+  --primary-lessons-light: #1abc9c;
+  --primary-edit-light: #f1c40f;
+  --primary-delete-light: #e74c3c;
+}
+
+.night-mode {
+  --card-bg-dark: #1e293b;
+  --border-color-dark: #374151;
+  --header-color-dark: #f3f4f6;
+  --text-color-dark: #d1d5db;
+  --subtext-color-dark: #9ca3af;
+  --primary-info-dark: #3b82f6;
+  --primary-lessons-dark: #10b981;
+  --primary-edit-dark: #f59e0b;
+  --primary-delete-dark: #ef4444;
+}
+
 .accordion {
   background: var(--card-bg-light);
   border: 1px solid var(--border-color-light);
   border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07);
-  cursor: pointer;
+  margin-bottom: 12px;
   transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.accordion:hover {
+  background: #eef2f6;
+}
+
+.night-mode .accordion {
+  background: var(--card-bg-dark);
+  border-color: var(--border-color-dark);
 }
 
 .accordion-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+.accordion-header:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.night-mode .accordion-header:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .accordion-title {
@@ -22,16 +61,114 @@
   color: var(--header-color-light);
 }
 
+.night-mode .accordion-title {
+  color: var(--header-color-dark);
+}
+
 .accordion-buttons {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex-shrink: 0;
 }
 
+.accordion-buttons .button-icon {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  padding: 0;
+}
+
+.accordion-buttons .button-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+  stroke: currentColor !important;
+}
+
+.accordion-buttons .button-icon:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.accordion-buttons button[aria-label="Szczegóły ucznia"] {
+  background-color: var(--primary-info-light);
+}
+
+.accordion-buttons button[aria-label="Szczegóły ucznia"]:hover {
+  background-color: #2980b9;
+}
+
+.night-mode .accordion-buttons button[aria-label="Szczegóły ucznia"] {
+  background-color: var(--primary-info-dark);
+}
+
+.night-mode .accordion-buttons button[aria-label="Szczegóły ucznia"]:hover {
+  background-color: #2563eb;
+}
+
+.accordion-buttons button[aria-label="Lekcje"] {
+  background-color: var(--primary-lessons-light);
+}
+
+.accordion-buttons button[aria-label="Lekcje"]:hover {
+  background-color: #16a085;
+}
+
+.night-mode .accordion-buttons button[aria-label="Lekcje"] {
+  background-color: var(--primary-lessons-dark);
+}
+
+.night-mode .accordion-buttons button[aria-label="Lekcje"]:hover {
+  background-color: #059669;
+}
+
+.accordion-buttons .button-edit {
+  background-color: var(--primary-edit-light);
+}
+
+.accordion-buttons .button-edit:hover {
+  background-color: #d4af37;
+}
+
+.night-mode .accordion-buttons .button-edit {
+  background-color: var(--primary-edit-dark);
+}
+
+.night-mode .accordion-buttons .button-edit:hover {
+  background-color: #d97706;
+}
+
+.accordion-buttons .button-delete {
+  background-color: var(--primary-delete-light);
+}
+
+.accordion-buttons .button-delete:hover {
+  background-color: #c0392b;
+}
+
+.night-mode .accordion-buttons .button-delete {
+  background-color: var(--primary-delete-dark);
+}
+
+.night-mode .accordion-buttons .button-delete:hover {
+  background-color: #dc2626;
+}
+
 .accordion-content {
-  margin-top: 15px;
-  padding-top: 15px;
+  padding: 0 16px 16px 16px;
   border-top: 1px solid var(--border-color-light);
+  background: transparent;
+  transition: border-color 0.3s ease;
+}
+
+.night-mode .accordion-content {
+  border-top-color: var(--border-color-dark);
 }
 
 .accordion-content p {
@@ -40,28 +177,24 @@
   color: var(--text-color-light);
   line-height: 1.5;
 }
-.accordion-content p strong {
-    color: var(--subtext-color-light);
-    font-weight: 600;
-}
-
-.night-mode .accordion {
-  background: var(--card-bg-dark);
-  border-color: var(--border-color-dark);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-.night-mode .accordion-title {
-  color: var(--header-color-dark);
-}
-
-.night-mode .accordion-content {
-  border-top-color: var(--border-color-dark);
-}
 
 .night-mode .accordion-content p {
   color: var(--text-color-dark);
 }
+
+.accordion-content p strong {
+  color: var(--subtext-color-light);
+  font-weight: 600;
+}
+
 .night-mode .accordion-content p strong {
-    color: var(--subtext-color-dark);
+  color: var(--subtext-color-dark);
+}
+
+.accordion + .accordion {
+  margin-top: 8px;
+}
+
+.accordion:first-child {
+  margin-top: 0;
 }
