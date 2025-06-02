@@ -1,14 +1,61 @@
+.lesson-btn {
+  background-color: #dc3545;
+  color: white;
+  border: 1px solid #dc3545;
+  padding: 7px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  text-align: center;
+  min-width: 150px;
+  line-height: 1.4;
+}
+.lesson-btn:hover {
+  background-color: #c82333;
+  border-color: #c82333;
+  opacity: 1;
+}
+.lesson-btn.active {
+  background-color: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+.lesson-btn.active:hover {
+  background-color: #218838;
+  border-color: #218838;
+}
+
+.night-mode .lesson-btn {
+  background-color: #a7333f;
+  color: white;
+  border-color: #a7333f;
+}
+.night-mode .lesson-btn:hover {
+  background-color: #8c2a34;
+  border-color: #8c2a34;
+}
+.night-mode .lesson-btn.active {
+  background-color: #38A169;
+  color: white;
+  border-color: #38A169;
+}
+.night-mode .lesson-btn.active:hover {
+  background-color: #2f8a5c;
+  border-color: #2f8a5c;
+}
+
 .lesson-panel {
   margin-top: 25px;
-  padding: 20px; /* Lekko zmniejszone */
-  background-color: var(--card-bg-light); /* Zmienione na tło karty */
+  padding: 20px;
+  background-color: var(--card-bg-light);
   border-radius: 8px;
   border: 1px solid var(--border-color-light);
   transition: background-color 0.3s ease, border-color 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06); /* Dodany lekki cień */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
-.lesson-panel > h3 { /* Nagłówek "Lekcje ucznia" */
+.lesson-panel > h3 {
   margin-top: 0;
   margin-bottom: 20px;
   color: var(--header-color-light);
@@ -18,17 +65,17 @@
 }
 
 .lesson-card {
-  background-color: var(--app-bg-light); /* Tło dla każdej karty lekcji, może być nieco inne niż panel */
+  background-color: var(--app-bg-light);
   border: 1px solid var(--border-color-light);
-  border-radius: 6px; /* Mniejsze zaokrąglenie */
+  border-radius: 6px;
   padding: 15px;
   margin-bottom: 15px;
   display: grid;
-  grid-template-areas: 
+  grid-template-areas:
     "icon info actions"
     "icon homework actions";
-  grid-template-columns: auto 1fr auto; /* Ikona, treść, akcje */
-  align-items: center; /* Wyśrodkowanie wertykalne */
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
   gap: 10px 15px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
@@ -36,45 +83,45 @@
     margin-bottom: 0;
 }
 
-.lesson-card .trash-btn-left { 
+.lesson-card .trash-btn-left {
     grid-area: icon;
     background: transparent;
     border: none;
     color: var(--error-red-light);
     cursor: pointer;
-    padding: 5px; /* Zwiększony obszar klikalny */
+    padding: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
-    align-self: flex-start; /* Ikona na górze, jeśli treść jest wieloliniowa */
+    align-self: flex-start;
 }
 .lesson-card .trash-btn-left svg {
   width: 18px;
   height: 18px;
-} 
+}
 .lesson-card .trash-btn-left:hover {
-    color: #c0392b; /* Ciemniejszy czerwony */
+    color: #c0392b;
     opacity: 0.8;
 }
 
-.lesson-card .lesson-date-topic { 
+.lesson-card .lesson-date-topic {
     grid-area: info;
     font-weight: 500;
     font-size: 1rem;
     color: var(--text-color-light);
 }
-.lesson-card .lesson-homework-text { 
+.lesson-card .lesson-homework-text {
     grid-area: homework;
-    font-size: 0.875rem; 
+    font-size: 0.875rem;
     color: var(--subtext-color-light);
-    margin-top: 4px; /* Mały odstęp od tematu */
+    margin-top: 4px;
 }
-.lesson-card .lesson-actions { 
-    grid-area: actions; 
-    display: flex; 
-    flex-direction: column; 
-    gap: 8px; 
-    align-items: flex-end; 
+.lesson-card .lesson-actions {
+    grid-area: actions;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
 }
 
 .no-lessons-message {
@@ -84,42 +131,19 @@
     font-style: italic;
 }
 
-.lesson-btn {
-  background-color: var(--input-border-light); /* Domyślnie bardziej neutralny szary */
-  color: var(--text-color-light);
-  border: 1px solid var(--border-color-light);
-  padding: 7px 10px; /* Zmniejszony padding */
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-  text-align: center;
-  min-width: 150px; /* Ustawienie minimalnej szerokości dla spójności */
-  line-height: 1.4;
-}
-.lesson-btn:hover {
-  border-color: var(--subtext-color-light);
-  opacity: 0.9;
-} 
-.lesson-btn.active {
-  background-color: #28a745; /* Zielony dla aktywnego - można zrobić zmienną --success-bg */
-  color: white;
-  border-color: #28a745;
-}
-
 .lesson-form {
     display: flex;
     flex-direction: column;
-    gap: 12px; /* Zwiększony odstęp */
+    gap: 12px;
     margin-top: 25px;
     padding-top: 20px;
     border-top: 1px solid var(--border-color-light);
 }
 .lesson-form h4 {
   margin-top: 0;
-  margin-bottom: 10px; /* Zmniejszony margines */
+  margin-bottom: 10px;
   color: var(--header-color-light);
-  font-size: 1.15rem; /* Spójność */
+  font-size: 1.15rem;
   font-weight: 500;
 }
 .lesson-form input[type="date"],
@@ -152,17 +176,16 @@
     background-color: #0056b3;
 }
 
-/* Night Mode dla LessonPanel */
 .night-mode .lesson-panel {
     background-color: var(--card-bg-dark);
     border-color: var(--border-color-dark);
 }
 .night-mode .lesson-panel > h3, .night-mode .lesson-panel .lesson-form h4 {
     color: var(--header-color-dark);
-    border-bottom-color: var(--border-color-dark); /* Dla h3 */
+    border-bottom-color: var(--border-color-dark);
 }
 .night-mode .lesson-card {
-    background-color: var(--app-bg-dark); 
+    background-color: var(--app-bg-dark);
     border-color: var(--border-color-dark);
 }
 .night-mode .no-lessons-message {
@@ -172,7 +195,7 @@
     color: var(--error-red-dark);
 }
 .night-mode .trash-btn-left:hover {
-    color: var(--error-red-light); /* Jaśniejszy na hover, ale nadal czerwony */
+    color: var(--error-red-light);
     opacity: 0.8;
 }
 .night-mode .lesson-card .lesson-date-topic {
@@ -180,19 +203,6 @@
 }
 .night-mode .lesson-card .lesson-homework-text {
     color: var(--subtext-color-dark);
-}
-.night-mode .lesson-btn {
-    background-color: var(--input-bg-dark);
-    color: var(--text-color-dark);
-    border-color: var(--input-border-dark);
-}
-.night-mode .lesson-btn:hover {
-  border-color: var(--subtext-color-dark);
-}
-.night-mode .lesson-btn.active {
-    background-color: #38A169; 
-    color: white;
-    border-color: #38A169;
 }
 .night-mode .lesson-form {
     border-top-color: var(--border-color-dark);
