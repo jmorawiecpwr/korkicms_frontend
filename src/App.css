@@ -458,14 +458,6 @@ select.input-error {
   background-color: var(--input-bg-light); 
   border-color: var(--input-border-light); 
 }
-.lesson-panel button { 
-  background-color: #28a745; 
-  color: white;
-  margin-top: 10px;
-  width: auto; 
-  padding: 10px 20px;
-}
-.lesson-panel button:hover { background-color: #218838; }
 
 .chart-section {
   background-color: var(--card-bg-light);
@@ -750,11 +742,6 @@ select.input-error {
   border-color: var(--input-border-dark);
   color: var(--text-color-dark);
 }
-.app-container.night-mode .lesson-panel button {
-  background-color: #38A169; 
-  color: white;
-}
-.app-container.night-mode .lesson-panel button:hover { background-color: #2F855A; }
 
 .app-container.night-mode .chart-section {
   background-color: var(--card-bg-dark);

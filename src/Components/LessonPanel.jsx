@@ -69,7 +69,6 @@ export default function LessonPanel({ studentId, lessons, onLessonSettled, onLes
 
             if (res.ok) {
                 onLessonUpdate(lessonId, { [fieldName]: !currentValue });
-                onLessonSettled?.();
             } else {
                 console.error("Błąd przy aktualizacji pola:", fieldName);
             }
